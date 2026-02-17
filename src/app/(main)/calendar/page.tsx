@@ -21,7 +21,7 @@ export default function CalendarPage() {
 
   const DayWithEvents = ({ date }: { date: Date }) => {
     if (!date) {
-        return <div />;
+        return <></>;
     }
     const eventsForDay = eventsByDate[date.toDateString()];
     if (eventsForDay) {
