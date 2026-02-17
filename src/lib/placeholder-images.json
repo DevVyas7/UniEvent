@@ -1,3 +1,82 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "A large crowd at a concert with vibrant stage lights.",
+      "imageUrl": "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb25jZXJ0JTIwY3Jvd2R8ZW58MHx8fHwxNzcxMzUwMzcyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "concert crowd"
+    },
+    {
+      "id": "event-concert",
+      "description": "A rock band performing on stage.",
+      "imageUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtdXNpYyUyMGNvbmNlcnR8ZW58MHx8fHwxNzcxMjY5OTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "music concert"
+    },
+    {
+      "id": "event-conference",
+      "description": "A speaker presenting at a tech conference.",
+      "imageUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx0ZWNoJTIwY29uZmVyZW5jZXxlbnwwfHx8fDE3NzEzNTYxODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tech conference"
+    },
+    {
+      "id": "event-workshop",
+      "description": "People collaborating in a creative workshop.",
+      "imageUrl": "https://images.unsplash.com/photo-1522065893269-6fd20f6d7438?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhcnQlMjB3b3Jrc2hvcHxlbnwwfHx8fDE3NzEzMDc2OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "art workshop"
+    },
+    {
+      "id": "event-community",
+      "description": "A group of people at an outdoor community gathering.",
+      "imageUrl": "https://images.unsplash.com/photo-1758959975358-95f5127660d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjb21tdW5pdHklMjBmZXN0aXZhbHxlbnwwfHx8fDE3NzEzNTYxODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "community festival"
+    },
+    {
+      "id": "event-sports",
+      "description": "A stadium filled with spectators during a sports match.",
+      "imageUrl": "https://images.unsplash.com/photo-1590372447928-33080a2b401a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzcG9ydHMlMjBzdGFkaXVtfGVufDB8fHx8MTc3MTMzNzc1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sports stadium"
+    },
+    {
+      "id": "event-webinar",
+      "description": "A professional setup for a webinar or online presentation.",
+      "imageUrl": "https://images.unsplash.com/photo-1637315684595-b35ab21b657d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvbmxpbmUlMjB3ZWJpbmFyfGVufDB8fHx8MTc3MTM1NjE4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "online webinar"
+    },
+    {
+      "id": "event-gala",
+      "description": "An elegant dinner setting at a charity gala.",
+      "imageUrl": "https://images.unsplash.com/photo-1724167924357-2d5febf3f931?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjaGFyaXR5JTIwZ2FsYXxlbnwwfHx8fDE3NzEzNTYxODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "charity gala"
+    },
+    {
+      "id": "event-art-exhibit",
+      "description": "People admiring paintings in an art gallery.",
+      "imageUrl": "https://images.unsplash.com/photo-1605429523419-d828acb941d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhcnQlMjBnYWxsZXJ5fGVufDB8fHx8MTc3MTMyODg0OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "art gallery"
+    },
+    {
+      "id": "user-avatar-1",
+      "description": "Avatar for a user.",
+      "imageUrl": "https://images.unsplash.com/photo-1590086782792-42dd2350140d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzEyNTE1MDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "user-avatar-2",
+      "description": "Avatar for another user.",
+      "imageUrl": "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc3MTM0MTI2N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "user-avatar-3",
+      "description": "Avatar for a third user.",
+      "imageUrl": "https://images.unsplash.com/photo-1624395213043-fa2e123b2656?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzEyNjI5ODh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "user-avatar-4",
+      "description": "Avatar for a fourth user.",
+      "imageUrl": "https://images.unsplash.com/photo-1607529378676-a20456ee2f6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBzbWlsaW5nfGVufDB8fHx8MTc3MTI0MzI1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person smiling"
+    }
+  ]
 }
