@@ -20,6 +20,9 @@ export default function CalendarPage() {
   }, []);
 
   const DayWithEvents = ({ date }: { date: Date }) => {
+    if (!date) {
+        return <div />;
+    }
     const eventsForDay = eventsByDate[date.toDateString()];
     if (eventsForDay) {
       return (
