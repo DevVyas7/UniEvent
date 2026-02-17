@@ -8,6 +8,7 @@ import { CalendarIcon, ClockIcon, MapPinIcon, TicketIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const [userRole, setUserRole] = useState<'user' | 'manager' | 'admin' | null>(null);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
     setUserRole(role || 'user');
   }, []);
   
-  const event = events.find((e) => e.id === params.id);
+  const event = events.find((e) => e.id === id);
 
   if (!event) {
     notFound();
