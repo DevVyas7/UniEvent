@@ -19,9 +19,6 @@ export default function Home() {
           <Button variant="ghost" asChild>
             <Link href="/login">Log In</Link>
           </Button>
-          <Button asChild>
-            <Link href="/signup">Sign Up</Link>
-          </Button>
         </nav>
       </header>
 
@@ -46,7 +43,7 @@ export default function Home() {
             </p>
             <div className="mt-10 flex justify-center gap-4">
               <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                <Link href="/signup">Get Started for Free</Link>
+                <Link href="/login">Get Started</Link>
               </Button>
               <Button size="lg" variant="secondary" asChild>
                 <Link href="/dashboard">Browse Events</Link>

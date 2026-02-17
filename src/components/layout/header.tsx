@@ -1,15 +1,13 @@
 'use client';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from '@/components/layout/user-nav';
-import { users } from '@/lib/placeholder-data';
+import type { User } from '@/lib/types';
 import Link from 'next/link';
 import { Ticket } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-export function Header() {
+export function Header({ user }: { user: User }) {
   const isMobile = useIsMobile();
-  // Simulate a logged-in user
-  const user = users[0];
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-card px-4 sm:px-6">

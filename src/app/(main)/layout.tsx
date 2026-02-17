@@ -1,17 +1,34 @@
+'use client';
+
 import { AppSidebar } from '@/components/layout/sidebar';
 import { Header } from '@/components/layout/header';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { useState, useEffect } from 'react';
+import { users } from '@/lib/placeholder-data';
+import type { User } from '@/lib/types';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
-  // In a real app, you'd get the user from a session.
-  // We'll simulate it for now.
-  const userRole = 'admin'; // 'user', 'manager', or 'admin'
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') as 'user' | 'manager' | 'admin' | null;
+    const currentUser = users.find(u => u.role === (role || 'user')) || users.find(u => u.role === 'user');
+    if(currentUser) {
+        setUser(currentUser);
+    }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading || !user) {
+    return <div className="flex min-h-screen items-center justify-center bg-background text-foreground">Loading...</div>;
+  }
 
   return (
     <SidebarProvider>
-      <AppSidebar userRole={userRole} />
+      <AppSidebar userRole={user.role} />
       <div className="flex flex-col flex-1">
-        <Header />
+        <Header user={user} />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-background">
           {children}
         </main>
