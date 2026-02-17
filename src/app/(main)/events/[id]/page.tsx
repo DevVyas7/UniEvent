@@ -1,10 +1,20 @@
+'use client';
+
 import Image from "next/image";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, MapPinIcon, TicketIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
+  const [userRole, setUserRole] = useState<'user' | 'manager' | 'admin' | null>(null);
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') as 'user' | 'manager' | 'admin' | null;
+    setUserRole(role || 'user');
+  }, []);
+  
   const event = events.find((e) => e.id === params.id);
 
   if (!event) {
@@ -17,6 +27,8 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
     month: 'long',
     day: 'numeric'
   });
+  
+  const isUser = userRole === 'user';
 
   return (
     <div className="bg-card rounded-lg shadow-lg overflow-hidden">
@@ -54,15 +66,17 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
               <p className="text-muted-foreground">{event.location}</p>
             </div>
           </div>
-          <div className="flex items-center justify-between bg-secondary p-4 rounded-lg">
-            <div className="flex items-center gap-2">
-                <TicketIcon className="h-6 w-6 text-primary"/>
-                <span className="font-semibold text-lg">{event.price > 0 ? `$${event.price.toFixed(2)}` : 'Free'}</span>
+          {isUser && (
+            <div className="flex items-center justify-between bg-secondary p-4 rounded-lg">
+              <div className="flex items-center gap-2">
+                  <TicketIcon className="h-6 w-6 text-primary"/>
+                  <span className="font-semibold text-lg">{event.price > 0 ? `$${event.price.toFixed(2)}` : 'Free'}</span>
+              </div>
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
+                Book Ticket
+              </Button>
             </div>
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-              Book Ticket
-            </Button>
-          </div>
+          )}
         </div>
       </div>
     </div>

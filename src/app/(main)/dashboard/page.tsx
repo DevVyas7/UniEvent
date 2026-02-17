@@ -1,13 +1,25 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { events } from "@/lib/placeholder-data";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
+  const [userRole, setUserRole] = useState<'user' | 'manager' | 'admin' | null>(null);
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') as 'user' | 'manager' | 'admin' | null;
+    setUserRole(role || 'user');
+  }, []);
+
   const upcomingEvents = events.slice(0, 3);
   const bookedEvents = events.slice(3, 5);
+
+  const isUser = userRole === 'user';
 
   return (
     <div className="space-y-8">
@@ -40,37 +52,41 @@ export default function DashboardPage() {
               </CardContent>
               <CardFooter className="p-4 pt-0 flex justify-between items-center">
                 <p className="font-semibold text-primary">{event.price > 0 ? `$${event.price.toFixed(2)}` : 'Free'}</p>
-                <Button asChild size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  <Link href={`/events/${event.id}`}>Book Now</Link>
-                </Button>
+                {isUser && (
+                  <Button asChild size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                    <Link href={`/events/${event.id}`}>Book Now</Link>
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           ))}
         </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">My Booked Events</h2>
-        <div className="space-y-4">
-            {bookedEvents.map((event) => (
-                <Card key={event.id} className="flex items-center">
-                    <div className="relative h-24 w-32 flex-shrink-0">
-                        <Image src={event.image} alt={event.name} layout="fill" objectFit="cover" className="rounded-l-lg" />
-                    </div>
-                    <div className="flex-1 p-4">
-                        <h3 className="font-semibold">{event.name}</h3>
-                        <p className="text-sm text-muted-foreground">{new Date(event.date).toLocaleDateString()} at {event.time}</p>
-                        <p className="text-sm text-muted-foreground">{event.location}</p>
-                    </div>
-                    <div className="p-4">
-                        <Button variant="outline" asChild>
-                            <Link href={`/events/${event.id}`}>View Details</Link>
-                        </Button>
-                    </div>
-                </Card>
-            ))}
-        </div>
-      </section>
+      {isUser && (
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">My Booked Events</h2>
+          <div className="space-y-4">
+              {bookedEvents.map((event) => (
+                  <Card key={event.id} className="flex items-center">
+                      <div className="relative h-24 w-32 flex-shrink-0">
+                          <Image src={event.image} alt={event.name} layout="fill" objectFit="cover" className="rounded-l-lg" />
+                      </div>
+                      <div className="flex-1 p-4">
+                          <h3 className="font-semibold">{event.name}</h3>
+                          <p className="text-sm text-muted-foreground">{new Date(event.date).toLocaleDateString()} at {event.time}</p>
+                          <p className="text-sm text-muted-foreground">{event.location}</p>
+                      </div>
+                      <div className="p-4">
+                          <Button variant="outline" asChild>
+                              <Link href={`/events/${event.id}`}>View Details</Link>
+                          </Button>
+                      </div>
+                  </Card>
+              ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

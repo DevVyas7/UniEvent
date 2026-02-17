@@ -14,7 +14,13 @@ export default function LoginPage() {
   const handleLogin = () => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('userRole', role);
-      router.push('/dashboard');
+      if (role === 'admin') {
+        router.push('/admin/dashboard');
+      } else if (role === 'manager') {
+        router.push('/manager/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
     }
   };
 
