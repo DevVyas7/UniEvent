@@ -6,18 +6,25 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, MapPinIcon, TicketIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import type { Event } from "@/lib/types";
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const [userRole, setUserRole] = useState<'user' | 'manager' | 'admin' | null>(null);
+  const [event, setEvent] = useState<Event | null | undefined>(undefined);
 
   useEffect(() => {
     const role = localStorage.getItem('userRole') as 'user' | 'manager' | 'admin' | null;
     setUserRole(role || 'user');
-  }, []);
-  
-  const event = events.find((e) => e.id === id);
+    const foundEvent = events.find((e) => e.id === id);
+    setEvent(foundEvent);
+  }, [id]);
 
+  if (event === undefined) {
+    // You can replace this with a more sophisticated skeleton loader
+    return <div>Loading...</div>;
+  }
+  
   if (!event) {
     notFound();
   }
