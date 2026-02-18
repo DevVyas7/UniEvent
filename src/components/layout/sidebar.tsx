@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
-  Calendar,
   Ticket,
   Users,
   Bot,
@@ -29,7 +28,6 @@ interface AppSidebarProps {
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['user', 'manager', 'admin'] },
   { href: '/events', label: 'Browse Events', icon: Ticket, roles: ['user', 'manager', 'admin'] },
-  { href: '/calendar', label: 'Calendar', icon: Calendar, roles: ['user', 'manager', 'admin'] },
 ];
 
 const managerMenuItems = [
@@ -56,8 +54,8 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
   ];
 
   return (
-    <Sidebar className="border-r">
-      <SidebarHeader>
+    <Sidebar className="border-r" collapsible="offcanvas">
+      <SidebarHeader className="p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
           <Ticket className="w-8 h-8 text-primary" />
           <div className="flex flex-col">
@@ -73,11 +71,11 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === item.href}
-                  className="w-full justify-start"
+                  className="w-full justify-start py-6"
                 >
                   <Link href={item.href}>
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.label}</span>
+                    <item.icon className="h-5 w-5" />
+                    <span className="text-base">{item.label}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -85,8 +83,10 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
           )}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-2">
-        {/* Can add a footer element here */}
+      <SidebarFooter className="p-4 border-t">
+        <p className="text-xs text-muted-foreground text-center italic">
+          Accessing as {userRole}
+        </p>
       </SidebarFooter>
     </Sidebar>
   );
