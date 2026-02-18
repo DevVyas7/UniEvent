@@ -1,15 +1,15 @@
 'use client';
 
+import React, { useEffect, useState, use } from "react";
 import Image from "next/image";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, MapPinIcon, TicketIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 import type { Event } from "@/lib/types";
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [userRole, setUserRole] = useState<'user' | 'manager' | 'admin' | null>(null);
   const [event, setEvent] = useState<Event | null | undefined>(undefined);
 
@@ -21,8 +21,11 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   }, [id]);
 
   if (event === undefined) {
-    // You can replace this with a more sophisticated skeleton loader
-    return <div>Loading...</div>;
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <p className="text-muted-foreground">Loading event details...</p>
+      </div>
+    );
   }
   
   if (!event) {
@@ -41,7 +44,13 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   return (
     <div className="bg-card rounded-lg shadow-lg overflow-hidden">
       <div className="relative h-64 md:h-96 w-full">
-        <Image src={event.image} alt={event.name} layout="fill" objectFit="cover" priority />
+        <Image 
+          src={event.image} 
+          alt={event.name} 
+          fill 
+          className="object-cover" 
+          priority 
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-8">
           <h1 className="text-3xl md:text-5xl font-bold text-primary-foreground tracking-tight">{event.name}</h1>
