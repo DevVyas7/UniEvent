@@ -12,16 +12,26 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const role = localStorage.getItem('userRole') as 'user' | 'manager' | 'admin' | null;
-    const currentUser = users.find(u => u.role === (role || 'user')) || users.find(u => u.role === 'user');
-    if(currentUser) {
+    const role = localStorage.getItem('userRole') as 'student' | 'organizer' | 'admin' | null;
+    // Default to 'student' if no role is found in localStorage
+    const targetRole = role || 'student';
+    const currentUser = users.find(u => u.role === targetRole) || users.find(u => u.role === 'student');
+    
+    if (currentUser) {
         setUser(currentUser);
     }
     setIsLoading(false);
   }, []);
 
   if (isLoading || !user) {
-    return <div className="flex min-h-screen items-center justify-center bg-background text-foreground font-medium">Loading EventVerse...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-foreground font-medium">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p>Loading UniEvent...</p>
+        </div>
+      </div>
+    );
   }
 
   return (

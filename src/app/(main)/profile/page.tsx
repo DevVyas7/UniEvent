@@ -12,8 +12,9 @@ export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const role = localStorage.getItem('userRole') as any;
-    const currentUser = users.find(u => u.role === (role || 'user')) || users.find(u => u.role === 'user');
+    const role = localStorage.getItem('userRole') as 'student' | 'organizer' | 'admin' | null;
+    const targetRole = role || 'student';
+    const currentUser = users.find(u => u.role === targetRole) || users.find(u => u.role === 'student');
     setUser(currentUser || null);
   }, []);
 
@@ -23,7 +24,7 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Profile Settings</h1>
-        <p className="text-muted-foreground">Manage your public profile and account information.</p>
+        <p className="text-muted-foreground">Manage your public profile and university information.</p>
       </div>
 
       <Card>
@@ -43,12 +44,12 @@ export default function ProfilePage() {
               <Input id="name" defaultValue={user.name} />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">University Email</Label>
               <Input id="email" defaultValue={user.email} disabled />
-              <p className="text-xs text-muted-foreground">Email cannot be changed in the prototype.</p>
+              <p className="text-xs text-muted-foreground">Email is managed by your institution.</p>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="role">Account Role</Label>
+              <Label htmlFor="role">Campus Role</Label>
               <Input id="role" defaultValue={user.role} disabled className="capitalize" />
             </div>
           </div>
