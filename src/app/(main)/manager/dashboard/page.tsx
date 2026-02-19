@@ -29,15 +29,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { events, users } from "@/lib/placeholder-data";
-import { MoreHorizontal, PlusCircle, Users as UsersIcon } from "lucide-react";
+import { MoreHorizontal, PlusCircle, Users as UsersIcon, Building2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import type { Event, User } from "@/lib/types";
 
-export default function ManagerDashboardPage() {
+export default function OrganizerDashboardPage() {
   const { toast } = useToast();
   const [managerEvents, setManagerEvents] = useState(
-    events.filter(e => e.managerId === '2' || e.managerId === '5')
+    events.filter(e => e.organizerId === '2' || e.organizerId === '5')
   );
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -45,8 +45,7 @@ export default function ManagerDashboardPage() {
   const [viewingParticipantsEvent, setViewingParticipantsEvent] = useState<Event | null>(null);
   const [isParticipantsDialogOpen, setIsParticipantsDialogOpen] = useState(false);
 
-  // Mock participants - in a real app, this would be a join table query
-  const mockParticipants = users.filter(u => u.role === 'user').slice(0, 3);
+  const mockParticipants = users.filter(u => u.role === 'student').slice(0, 3);
 
   const handleEditClick = (event: Event) => {
     setEditingEvent({ ...event });
@@ -75,8 +74,8 @@ export default function ManagerDashboardPage() {
   const handleDeleteEvent = (id: string) => {
     setManagerEvents(prev => prev.filter(e => e.id !== id));
     toast({
-      title: "Event Deleted",
-      description: "The event has been removed from your list.",
+      title: "Event Removed",
+      description: "The event has been deleted from the portal.",
       variant: "destructive",
     });
   };
@@ -85,26 +84,25 @@ export default function ManagerDashboardPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">My Events</h1>
-          <p className="text-muted-foreground">Manage, edit, and create your events.</p>
+          <h1 className="text-3xl font-bold tracking-tight">Departmental Events</h1>
+          <p className="text-muted-foreground">Manage and oversee the events organized by your department.</p>
         </div>
-        <Button asChild>
+        <Button asChild className="bg-primary hover:bg-primary/90">
           <Link href="/manager/events/new">
             <PlusCircle className="mr-2 h-4 w-4" />
-            Create Event
+            New Event
           </Link>
         </Button>
       </div>
 
-      <div className="bg-card rounded-lg border shadow-sm">
+      <div className="bg-card rounded-2xl border-none shadow-lg overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted/50">
             <TableRow>
-              <TableHead>Event Name</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="font-bold">Event Name</TableHead>
+              <TableHead className="font-bold">Date</TableHead>
+              <TableHead className="font-bold">Location</TableHead>
+              <TableHead className="font-bold">Status</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -115,14 +113,13 @@ export default function ManagerDashboardPage() {
               const eventDate = new Date(event.date);
               const isUpcoming = eventDate > new Date();
               return (
-                <TableRow key={event.id}>
-                  <TableCell className="font-medium">{event.name}</TableCell>
+                <TableRow key={event.id} className="hover:bg-muted/20">
+                  <TableCell className="font-semibold">{event.name}</TableCell>
                   <TableCell>{eventDate.toLocaleDateString()}</TableCell>
                   <TableCell>{event.location}</TableCell>
-                  <TableCell>{event.price > 0 ? `$${event.price.toFixed(2)}` : 'Free'}</TableCell>
                   <TableCell>
-                    <Badge variant={isUpcoming ? "default" : "secondary"} className={isUpcoming ? "bg-green-600 hover:bg-green-700" : ""}>
-                      {isUpcoming ? "Upcoming" : "Past"}
+                    <Badge variant={isUpcoming ? "default" : "secondary"} className={isUpcoming ? "bg-green-500 hover:bg-green-600 border-none" : "border-none"}>
+                      {isUpcoming ? "Live" : "Past"}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -135,16 +132,16 @@ export default function ManagerDashboardPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleViewParticipants(event)}>
-                          View Participants
+                          View Participant List
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleEditClick(event)}>
-                          Edit Event
+                          Edit Details
                         </DropdownMenuItem>
                         <DropdownMenuItem 
                           className="text-destructive focus:text-destructive focus:bg-destructive/10"
                           onClick={() => handleDeleteEvent(event.id)}
                         >
-                          Delete Event
+                          Cancel Event
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -160,15 +157,15 @@ export default function ManagerDashboardPage() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Edit Event</DialogTitle>
+            <DialogTitle>Update Event Details</DialogTitle>
             <DialogDescription>
-              Make changes to your event details here. Click save when you're done.
+              Modify information for this departmental event.
             </DialogDescription>
           </DialogHeader>
           {editingEvent && (
             <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-2">
               <div className="grid gap-2">
-                <Label htmlFor="name">Event Name</Label>
+                <Label htmlFor="name">Event Title</Label>
                 <Input
                   id="name"
                   value={editingEvent.name}
@@ -176,7 +173,7 @@ export default function ManagerDashboardPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Detailed Description</Label>
                 <Textarea
                   id="description"
                   value={editingEvent.description}
@@ -185,7 +182,7 @@ export default function ManagerDashboardPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="location">Location</Label>
+                <Label htmlFor="location">Location / Lab / Hall</Label>
                 <Input
                   id="location"
                   value={editingEvent.location}
@@ -194,7 +191,7 @@ export default function ManagerDashboardPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="date">Date</Label>
+                  <Label htmlFor="date">Scheduled Date</Label>
                   <Input
                     id="date"
                     type="date"
@@ -203,12 +200,11 @@ export default function ManagerDashboardPage() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="price">Price ($)</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    value={editingEvent.price}
-                    onChange={(e) => setEditingEvent({ ...editingEvent, price: parseFloat(e.target.value) || 0 })}
+                  <Label htmlFor="category">Category</Label>
+                   <Input
+                    id="category"
+                    value={editingEvent.category}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, category: e.target.value })}
                   />
                 </div>
               </div>
@@ -216,7 +212,7 @@ export default function ManagerDashboardPage() {
           )}
           <DialogFooter className="border-t pt-4">
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleUpdateEvent} className="bg-accent text-accent-foreground hover:bg-accent/90">Save Changes</Button>
+            <Button onClick={handleUpdateEvent} className="bg-primary text-primary-foreground hover:bg-primary/90">Save Updates</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -225,19 +221,19 @@ export default function ManagerDashboardPage() {
       <Dialog open={isParticipantsDialogOpen} onOpenChange={setIsParticipantsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Participants List</DialogTitle>
+            <DialogTitle>Student Participant List</DialogTitle>
             <DialogDescription>
-              Users currently registered for {viewingParticipantsEvent?.name}.
+              Students who have joined {viewingParticipantsEvent?.name}.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <div className="bg-muted/50 rounded-lg border overflow-hidden">
+            <div className="bg-muted/30 rounded-xl border border-muted overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>Student Name</TableHead>
+                    <TableHead>Student Email</TableHead>
+                    <TableHead>Role</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -246,14 +242,14 @@ export default function ManagerDashboardPage() {
                       <TableCell className="font-medium">{participant.name}</TableCell>
                       <TableCell>{participant.email}</TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">Confirmed</Badge>
+                        <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5 capitalize">Student</Badge>
                       </TableCell>
                     </TableRow>
                   ))}
                   {mockParticipants.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
-                        No participants registered yet.
+                        No students have joined yet.
                       </TableCell>
                     </TableRow>
                   )}

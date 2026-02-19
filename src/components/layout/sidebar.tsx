@@ -14,42 +14,43 @@ import {
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
-  Ticket,
+  GraduationCap,
   Users,
   Bot,
   Shield,
   Briefcase,
+  UserCircle,
 } from 'lucide-react';
 
 interface AppSidebarProps {
-  userRole: 'user' | 'manager' | 'admin';
+  userRole: 'student' | 'organizer' | 'admin';
 }
 
 const menuItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['user', 'manager', 'admin'] },
-  { href: '/events', label: 'Browse Events', icon: Ticket, roles: ['user', 'manager', 'admin'] },
+  { href: '/dashboard', label: 'Student Portal', icon: LayoutDashboard, roles: ['student', 'organizer', 'admin'] },
+  { href: '/events', label: 'Campus Events', icon: GraduationCap, roles: ['student', 'organizer', 'admin'] },
 ];
 
-const managerMenuItems = [
-    { href: '/manager/dashboard', label: 'My Events', icon: Briefcase, roles: ['manager', 'admin'] },
+const organizerMenuItems = [
+    { href: '/manager/dashboard', label: 'My Department', icon: Briefcase, roles: ['organizer', 'admin'] },
 ];
 
 const adminMenuItems = [
-  { href: '/admin/dashboard', label: 'Admin Dashboard', icon: Shield, roles: ['admin'] },
-  { href: '/admin/users', label: 'User Management', icon: Users, roles: ['admin'] },
-  { href: '/admin/form-generator', label: 'Form Generator', icon: Bot, roles: ['admin'] },
+  { href: '/admin/dashboard', label: 'System Admin', icon: Shield, roles: ['admin'] },
+  { href: '/admin/users', label: 'User Directory', icon: Users, roles: ['admin'] },
+  { href: '/admin/form-generator', label: 'Smart Forms', icon: Bot, roles: ['admin'] },
 ];
 
 export function AppSidebar({ userRole }: AppSidebarProps) {
   const pathname = usePathname();
 
-  const isUser = userRole === 'user';
-  const isManager = userRole === 'manager';
+  const isStudent = userRole === 'student';
+  const isOrganizer = userRole === 'organizer';
   const isAdmin = userRole === 'admin';
 
   const allMenuItems = [
     ...menuItems,
-    ...(isManager || isAdmin ? managerMenuItems : []),
+    ...(isOrganizer || isAdmin ? organizerMenuItems : []),
     ...(isAdmin ? adminMenuItems : []),
   ];
 
@@ -57,9 +58,9 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
     <Sidebar className="border-r" collapsible="offcanvas">
       <SidebarHeader className="p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <Ticket className="w-8 h-8 text-primary" />
+          <GraduationCap className="w-8 h-8 text-primary" />
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-sidebar-foreground">EventVerse</h1>
+            <h1 className="text-xl font-bold text-sidebar-foreground">UniEvent</h1>
           </div>
         </Link>
       </SidebarHeader>
@@ -71,7 +72,7 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === item.href}
-                  className="w-full justify-start py-6"
+                  className="w-full justify-start py-6 hover:bg-primary/5 data-[active=true]:bg-primary/10 data-[active=true]:text-primary"
                 >
                   <Link href={item.href}>
                     <item.icon className="h-5 w-5" />
@@ -84,8 +85,8 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="p-4 border-t">
-        <p className="text-xs text-muted-foreground text-center italic">
-          Accessing as {userRole}
+        <p className="text-[10px] text-muted-foreground text-center font-medium uppercase tracking-widest">
+          {userRole} session
         </p>
       </SidebarFooter>
     </Sidebar>

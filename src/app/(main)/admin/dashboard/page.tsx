@@ -1,73 +1,71 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Ticket, DollarSign, Activity } from "lucide-react";
+import { Users, GraduationCap, Building2, Activity } from "lucide-react";
 import { users, events } from "@/lib/placeholder-data";
 
 export default function AdminDashboardPage() {
-    const totalUsers = users.length;
+    const totalStudents = users.filter(u => u.role === 'student').length;
     const totalEvents = events.length;
-    const totalRevenue = events.reduce((acc, event) => acc + event.price, 0) * 15; // mock calculation
+    const totalDepartments = Array.from(new Set(events.map(e => e.department))).length;
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Oversee and manage the entire EventVerse platform.</p>
+        <h1 className="text-3xl font-bold tracking-tight">System Overview</h1>
+        <p className="text-muted-foreground">Monitor campus engagement and departmental activities.</p>
       </div>
 
-       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Revenue
+              Active Departments
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalRevenue.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{totalDepartments}</div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              Across all campuses
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Registered Students</CardTitle>
+            <GraduationCap className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+{totalStudents}</div>
+            <p className="text-xs text-muted-foreground">
+              +12% from last semester
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="border-none shadow-md">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Live Events</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+{totalUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Events</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+{totalEvents}</div>
             <p className="text-xs text-muted-foreground">
-              +19% from last month
+              Active this month
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Participation</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+573</div>
+            <div className="text-2xl font-bold">+1.2k</div>
             <p className="text-xs text-muted-foreground">
-              +201 since last hour
+              Aggregated joins
             </p>
           </CardContent>
         </Card>
       </div>
-
-      {/* Add more sections like recent activities, pending approvals etc. */}
     </div>
   );
 }

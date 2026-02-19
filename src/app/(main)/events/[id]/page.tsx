@@ -4,18 +4,19 @@ import React, { useEffect, useState, use } from "react";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, MapPinIcon, TicketIcon, ArrowLeft } from "lucide-react";
+import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2 } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [userRole, setUserRole] = useState<'user' | 'manager' | 'admin' | null>(null);
+  const [userRole, setUserRole] = useState<'student' | 'organizer' | 'admin' | null>(null);
   const [event, setEvent] = useState<Event | null | undefined>(undefined);
 
   useEffect(() => {
-    const role = localStorage.getItem('userRole') as 'user' | 'manager' | 'admin' | null;
-    setUserRole(role || 'user');
+    const role = localStorage.getItem('userRole') as any;
+    setUserRole(role || 'student');
     const foundEvent = events.find((e) => e.id === id);
     setEvent(foundEvent);
   }, [id]);
@@ -23,7 +24,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   if (event === undefined) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <p className="text-muted-foreground">Loading event details...</p>
+        <p className="text-muted-foreground animate-pulse">Fetching details...</p>
       </div>
     );
   }
@@ -39,67 +40,77 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
     day: 'numeric'
   });
   
-  const isUser = userRole === 'user';
+  const isStudent = userRole === 'student' || !userRole;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <Button variant="ghost" asChild className="pl-0 text-muted-foreground">
+      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
         <Link href="/events">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Events
         </Link>
       </Button>
 
-      <div className="bg-card rounded-lg border shadow-sm overflow-hidden p-6 md:p-10">
+      <div className="bg-card rounded-2xl border-none shadow-xl overflow-hidden p-6 md:p-10">
         <div className="space-y-6">
-          <div className="space-y-2">
+          <div className="space-y-4">
+            <Badge className="bg-accent text-accent-foreground border-none px-4 py-1">{event.department}</Badge>
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight">{event.name}</h1>
-            <p className="text-primary font-medium">{event.category}</p>
+            <div className="flex items-center gap-2 text-muted-foreground">
+                <Building2 className="w-4 h-4" />
+                <span className="text-sm font-medium">Organized by {event.department} Department</span>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 pt-6 border-t">
+          <div className="grid md:grid-cols-3 gap-8 pt-8 border-t">
             <div className="md:col-span-2 space-y-6">
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">About this event</h2>
+                <h2 className="text-xl font-semibold">Description</h2>
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{event.description}</p>
               </div>
             </div>
             
-            <div className="space-y-6 bg-muted/30 p-6 rounded-xl h-fit border">
-              <div className="space-y-4">
+            <div className="space-y-6 bg-muted/20 p-6 rounded-2xl h-fit border border-muted">
+              <div className="space-y-5">
                 <div className="flex items-start gap-3">
-                  <CalendarIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div className="bg-primary/10 p-2 rounded-lg">
+                    <CalendarIcon className="h-5 w-5 text-primary shrink-0" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-sm">Date</h3>
+                    <h3 className="font-semibold text-sm">When</h3>
                     <p className="text-muted-foreground text-sm">{eventDate}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <ClockIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                   <div className="bg-primary/10 p-2 rounded-lg">
+                    <ClockIcon className="h-5 w-5 text-primary shrink-0" />
+                  </div>
                   <div>
                     <h3 className="font-semibold text-sm">Time</h3>
                     <p className="text-muted-foreground text-sm">{event.time}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <MapPinIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                   <div className="bg-primary/10 p-2 rounded-lg">
+                    <MapPinIcon className="h-5 w-5 text-primary shrink-0" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-sm">Location</h3>
+                    <h3 className="font-semibold text-sm">Where</h3>
                     <p className="text-muted-foreground text-sm">{event.location}</p>
                   </div>
                 </div>
               </div>
 
-              {isUser && (
-                <div className="pt-4 border-t space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground text-sm">Ticket Price</span>
-                    <span className="font-bold text-xl">{event.price > 0 ? `$${event.price.toFixed(2)}` : 'Free'}</span>
+              {isStudent && (
+                <div className="pt-6 border-t space-y-4">
+                  <div className="bg-green-100 text-green-700 px-3 py-2 rounded text-center text-xs font-bold uppercase">
+                    Free for All Students
                   </div>
-                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2">
-                    <TicketIcon className="h-4 w-4" />
-                    Book Ticket
+                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 h-12 text-lg">
+                    <GraduationCap className="h-5 w-5" />
+                    Join Event
                   </Button>
+                  <p className="text-[10px] text-center text-muted-foreground italic">Joining confirms your participation for departmental records.</p>
                 </div>
               )}
             </div>

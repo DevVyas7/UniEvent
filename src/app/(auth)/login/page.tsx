@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const [role, setRole] = useState('user');
+  const [role, setRole] = useState('student');
   const router = useRouter();
 
   const handleLogin = () => {
@@ -16,7 +16,7 @@ export default function LoginPage() {
       localStorage.setItem('userRole', role);
       if (role === 'admin') {
         router.push('/admin/dashboard');
-      } else if (role === 'manager') {
+      } else if (role === 'organizer') {
         router.push('/manager/dashboard');
       } else {
         router.push('/dashboard');
@@ -25,30 +25,30 @@ export default function LoginPage() {
   };
 
   return (
-    <Card>
+    <Card className="border-none shadow-2xl">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Bypass Login</CardTitle>
+        <CardTitle className="text-2xl font-bold">University SSO Bypass</CardTitle>
         <CardDescription>
-          Select a role to proceed to the dashboard.
+          Select your campus role to enter the system.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
-            <Label htmlFor="role">Role</Label>
+            <Label htmlFor="role" className="text-xs font-bold uppercase text-muted-foreground">Select Role</Label>
             <Select value={role} onValueChange={setRole}>
-                <SelectTrigger id="role">
+                <SelectTrigger id="role" className="h-12">
                     <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="user">User</SelectItem>
-                    <SelectItem value="manager">Manager</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="organizer">Department Organizer</SelectItem>
+                    <SelectItem value="admin">University Administrator</SelectItem>
                 </SelectContent>
             </Select>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
-        <Button onClick={handleLogin} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">Proceed to App</Button>
+        <Button onClick={handleLogin} className="w-full bg-primary hover:bg-primary/90 h-12 text-lg shadow-lg">Enter UniEvent</Button>
       </CardFooter>
     </Card>
   );

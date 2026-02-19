@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'EventVerse',
-  description: 'The all-in-one solution for event management.',
+  title: 'UniEvent',
+  description: 'Inter-University Event Management System for departments and students.',
 };
 
 export default function RootLayout({

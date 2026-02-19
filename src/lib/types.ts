@@ -2,7 +2,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'manager' | 'admin';
+  role: 'student' | 'organizer' | 'admin';
 };
 
 export type Event = {
@@ -12,7 +12,7 @@ export type Event = {
   date: string;
   time: string;
   location: string;
-  price: number;
-  managerId: string;
+  organizerId: string;
+  department: string;
   category: string;
 };
