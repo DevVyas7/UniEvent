@@ -2,12 +2,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Ticket, Users, Bot, CalendarDays } from 'lucide-react';
-import Image from 'next/image';
-import { placeHolderImages } from '@/lib/placeholder-data';
 
 export default function Home() {
-  const heroImage = placeHolderImages.find((img) => img.id === 'hero');
-
   return (
     <div className="flex flex-col min-h-screen">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -23,17 +19,7 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        <section className="relative w-full py-20 md:py-32 lg:py-40">
-          {heroImage && (
-            <Image
-              src={heroImage.imageUrl}
-              alt={heroImage.description}
-              fill
-              className="object-cover -z-10 brightness-50"
-              data-ai-hint={heroImage.imageHint}
-              priority
-            />
-          )}
+        <section className="relative w-full py-20 md:py-32 lg:py-40 bg-primary">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-primary-foreground">
             <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
               Your Universe of Events

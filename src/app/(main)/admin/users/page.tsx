@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { users } from "@/lib/placeholder-data";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, User as UserIcon } from "lucide-react";
 
 export default function AdminUsersPage() {
   return (
@@ -47,10 +46,9 @@ export default function AdminUsersPage() {
               <TableRow key={user.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-9 w-9">
-                      <AvatarImage src={user.avatar} alt="Avatar" />
-                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
+                    <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center">
+                      <UserIcon className="h-5 w-5 text-muted-foreground" />
+                    </div>
                     <div className="grid gap-0.5">
                       <p className="font-medium">{user.name}</p>
                       <p className="text-xs text-muted-foreground">

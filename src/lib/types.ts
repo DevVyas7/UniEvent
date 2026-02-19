@@ -3,7 +3,6 @@ export type User = {
   name: string;
   email: string;
   role: 'user' | 'manager' | 'admin';
-  avatar: string;
 };
 
 export type Event = {

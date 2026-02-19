@@ -1,7 +1,4 @@
 import type { User, Event } from './types';
-import { PlaceHolderImages } from './placeholder-images';
-
-export const placeHolderImages = PlaceHolderImages;
 
 export const users: User[] = [
   {
@@ -9,35 +6,30 @@ export const users: User[] = [
     name: 'Admin User',
     email: 'admin@eventverse.com',
     role: 'admin',
-    avatar: placeHolderImages.find(img => img.id === 'user-avatar-1')?.imageUrl || '',
   },
   {
     id: '2',
     name: 'Manager User',
     email: 'manager@eventverse.com',
     role: 'manager',
-    avatar: placeHolderImages.find(img => img.id === 'user-avatar-2')?.imageUrl || '',
   },
   {
     id: '3',
     name: 'Regular User',
     email: 'user@eventverse.com',
     role: 'user',
-    avatar: placeHolderImages.find(img => img.id === 'user-avatar-3')?.imageUrl || '',
   },
   {
     id: '4',
     name: 'Jane Doe',
     email: 'jane.doe@example.com',
     role: 'user',
-    avatar: placeHolderImages.find(img => img.id === 'user-avatar-4')?.imageUrl || '',
   },
   {
     id: '5',
     name: 'John Smith',
     email: 'john.smith@example.com',
     role: 'manager',
-    avatar: placeHolderImages.find(img => img.id === 'user-avatar-1')?.imageUrl || '',
   },
 ];
 

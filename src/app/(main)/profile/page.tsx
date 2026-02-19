@@ -1,12 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { users } from '@/lib/placeholder-data';
 import type { User } from '@/lib/types';
+import { User as UserIcon } from 'lucide-react';
 
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
@@ -33,11 +33,9 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center gap-6">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={user.avatar} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-            <Button variant="outline">Change Avatar</Button>
+            <div className="h-20 w-20 rounded-full bg-muted flex items-center justify-center">
+              <UserIcon className="h-10 w-10 text-muted-foreground" />
+            </div>
           </div>
           <div className="grid gap-4">
             <div className="grid gap-2">
