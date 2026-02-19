@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { events } from "@/lib/placeholder-data";
-import { MoreHorizontal, PlusCircle, ImageIcon } from "lucide-react";
+import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import type { Event } from "@/lib/types";
@@ -50,7 +50,6 @@ export default function ManagerDashboardPage() {
   const handleUpdateEvent = () => {
     if (!editingEvent) return;
 
-    // Simulate update in local state
     setManagerEvents(prev =>
       prev.map(e => (e.id === editingEvent.id ? editingEvent : e))
     );
@@ -86,7 +85,7 @@ export default function ManagerDashboardPage() {
         </Button>
       </div>
 
-      <div className="bg-card rounded-lg shadow-sm">
+      <div className="bg-card rounded-lg border shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
@@ -167,24 +166,6 @@ export default function ManagerDashboardPage() {
                   onChange={(e) => setEditingEvent({ ...editingEvent, description: e.target.value })}
                   rows={4}
                 />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="image">Image URL</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="image"
-                    value={editingEvent.image}
-                    onChange={(e) => setEditingEvent({ ...editingEvent, image: e.target.value })}
-                    placeholder="https://..."
-                  />
-                  <Button 
-                    variant="outline" 
-                    size="icon"
-                    onClick={() => setEditingEvent({ ...editingEvent, image: 'https://picsum.photos/seed/' + Math.random() + '/800/600' })}
-                  >
-                    <ImageIcon className="h-4 w-4" />
-                  </Button>
-                </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="location">Location</Label>

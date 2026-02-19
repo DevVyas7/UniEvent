@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Sparkles, Image as ImageIcon } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateEventDescription } from "@/ai/flows/generate-event-description";
 
@@ -24,7 +24,6 @@ export default function NewEventPage() {
     location: '',
     price: '',
     category: '',
-    image: '',
   });
 
   const handleAiGenerateDescription = async () => {
@@ -106,30 +105,10 @@ export default function NewEventPage() {
                     <Textarea 
                       id="description" 
                       placeholder="Tell attendees about your event." 
-                      rows={5}
+                      rows={8}
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     />
-                </div>
-                
-                <div className="space-y-2">
-                    <Label htmlFor="image">Event Header Image URL</Label>
-                    <div className="flex gap-2">
-                      <div className="relative flex-1">
-                        <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          id="image" 
-                          placeholder="https://images.unsplash.com/..." 
-                          className="pl-10"
-                          value={formData.image}
-                          onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                        />
-                      </div>
-                      <Button variant="outline" onClick={() => setFormData({...formData, image: 'https://picsum.photos/seed/' + Math.random() + '/800/600'})}>
-                        Randomize
-                      </Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Provide a direct link to an image (e.g., from Unsplash or Picsum).</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

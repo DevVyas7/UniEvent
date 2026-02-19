@@ -1,10 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { events } from "@/lib/placeholder-data";
-import { Search } from "lucide-react";
+import { Search, MapPin, Calendar as CalendarIcon } from "lucide-react";
 
 export default function EventsPage() {
   return (
@@ -21,18 +20,22 @@ export default function EventsPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {events.map((event) => (
-          <Card key={event.id}>
-            <CardHeader className="p-0">
-              <div className="relative h-48 w-full">
-                <Image src={event.image} alt={event.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
-              </div>
+          <Card key={event.id} className="flex flex-col h-full">
+            <CardHeader>
+              <Badge variant="secondary" className="mb-2 w-fit">{event.category}</Badge>
+              <CardTitle className="text-lg line-clamp-1">{event.name}</CardTitle>
+              <CardDescription className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+                <CalendarIcon className="h-3 w-3" />
+                {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="p-4">
-              <Badge variant="secondary" className="mb-2">{event.category}</Badge>
-              <CardTitle className="text-lg">{event.name}</CardTitle>
-              <CardDescription className="text-sm text-muted-foreground mt-1">{new Date(event.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} &bull; {event.location}</CardDescription>
+            <CardContent className="flex-1">
+              <div className="flex items-start gap-1.5 text-sm text-muted-foreground">
+                <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
+                <p className="line-clamp-2">{event.location}</p>
+              </div>
             </CardContent>
-            <CardFooter className="p-4 pt-0 flex justify-between items-center">
+            <CardFooter className="pt-0 flex justify-between items-center">
               <p className="font-semibold text-primary">{event.price > 0 ? `$${event.price.toFixed(2)}` : 'Free'}</p>
               <Button asChild size="sm">
                 <Link href={`/events/${event.id}`}>View Details</Link>

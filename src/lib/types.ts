@@ -13,7 +13,6 @@ export type Event = {
   date: string;
   time: string;
   location: string;
-  image: string;
   price: number;
   managerId: string;
   category: string;
