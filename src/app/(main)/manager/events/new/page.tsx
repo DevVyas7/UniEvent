@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Sparkles, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateEventDescription } from "@/ai/flows/generate-event-description";
+import { Badge } from "@/components/ui/badge";
 
 export default function NewDepartmentEventPage() {
   const router = useRouter();
