@@ -28,11 +28,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { events } from "@/lib/placeholder-data";
-import { MoreHorizontal, PlusCircle } from "lucide-react";
+import { events, users } from "@/lib/placeholder-data";
+import { MoreHorizontal, PlusCircle, Users as UsersIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import type { Event } from "@/lib/types";
+import type { Event, User } from "@/lib/types";
 
 export default function ManagerDashboardPage() {
   const { toast } = useToast();
@@ -40,11 +40,22 @@ export default function ManagerDashboardPage() {
     events.filter(e => e.managerId === '2' || e.managerId === '5')
   );
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  
+  const [viewingParticipantsEvent, setViewingParticipantsEvent] = useState<Event | null>(null);
+  const [isParticipantsDialogOpen, setIsParticipantsDialogOpen] = useState(false);
+
+  // Mock participants - in a real app, this would be a join table query
+  const mockParticipants = users.filter(u => u.role === 'user').slice(0, 3);
 
   const handleEditClick = (event: Event) => {
     setEditingEvent({ ...event });
-    setIsDialogOpen(true);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleViewParticipants = (event: Event) => {
+    setViewingParticipantsEvent(event);
+    setIsParticipantsDialogOpen(true);
   };
 
   const handleUpdateEvent = () => {
@@ -54,7 +65,7 @@ export default function ManagerDashboardPage() {
       prev.map(e => (e.id === editingEvent.id ? editingEvent : e))
     );
 
-    setIsDialogOpen(false);
+    setIsEditDialogOpen(false);
     toast({
       title: "Event Updated",
       description: `${editingEvent.name} has been successfully updated.`,
@@ -123,12 +134,17 @@ export default function ManagerDashboardPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleEditClick(event)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleViewParticipants(event)}>
+                          View Participants
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditClick(event)}>
+                          Edit Event
+                        </DropdownMenuItem>
                         <DropdownMenuItem 
                           className="text-destructive focus:text-destructive focus:bg-destructive/10"
                           onClick={() => handleDeleteEvent(event.id)}
                         >
-                          Delete
+                          Delete Event
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -140,7 +156,8 @@ export default function ManagerDashboardPage() {
         </Table>
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Edit Event Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Edit Event</DialogTitle>
@@ -198,8 +215,54 @@ export default function ManagerDashboardPage() {
             </div>
           )}
           <DialogFooter className="border-t pt-4">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
             <Button onClick={handleUpdateEvent} className="bg-accent text-accent-foreground hover:bg-accent/90">Save Changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Participants Dialog */}
+      <Dialog open={isParticipantsDialogOpen} onOpenChange={setIsParticipantsDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Participants List</DialogTitle>
+            <DialogDescription>
+              Users currently registered for {viewingParticipantsEvent?.name}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="bg-muted/50 rounded-lg border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {mockParticipants.map((participant) => (
+                    <TableRow key={participant.id}>
+                      <TableCell className="font-medium">{participant.name}</TableCell>
+                      <TableCell>{participant.email}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">Confirmed</Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {mockParticipants.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
+                        No participants registered yet.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+          <DialogFooter className="border-t pt-4">
+            <Button onClick={() => setIsParticipantsDialogOpen(false)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
