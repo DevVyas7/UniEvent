@@ -27,8 +27,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { events } from "@/lib/placeholder-data";
-import { MoreHorizontal, PlusCircle } from "lucide-react";
+import { MoreHorizontal, PlusCircle, ImageIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import type { Event } from "@/lib/types";
@@ -141,7 +142,7 @@ export default function ManagerDashboardPage() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Edit Event</DialogTitle>
             <DialogDescription>
@@ -149,7 +150,7 @@ export default function ManagerDashboardPage() {
             </DialogDescription>
           </DialogHeader>
           {editingEvent && (
-            <div className="grid gap-4 py-4">
+            <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-2">
               <div className="grid gap-2">
                 <Label htmlFor="name">Event Name</Label>
                 <Input
@@ -157,6 +158,33 @@ export default function ManagerDashboardPage() {
                   value={editingEvent.name}
                   onChange={(e) => setEditingEvent({ ...editingEvent, name: e.target.value })}
                 />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={editingEvent.description}
+                  onChange={(e) => setEditingEvent({ ...editingEvent, description: e.target.value })}
+                  rows={4}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="image">Image URL</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="image"
+                    value={editingEvent.image}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, image: e.target.value })}
+                    placeholder="https://..."
+                  />
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => setEditingEvent({ ...editingEvent, image: 'https://picsum.photos/seed/' + Math.random() + '/800/600' })}
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="location">Location</Label>
@@ -188,7 +216,7 @@ export default function ManagerDashboardPage() {
               </div>
             </div>
           )}
-          <DialogFooter>
+          <DialogFooter className="border-t pt-4">
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
             <Button onClick={handleUpdateEvent} className="bg-accent text-accent-foreground hover:bg-accent/90">Save Changes</Button>
           </DialogFooter>
