@@ -200,11 +200,6 @@ export default function NewDepartmentEventPage() {
                             </SelectContent>
                         </Select>
                     </div>
-                    <div className="flex items-end pb-1">
-                        <Badge variant="outline" className="text-green-600 bg-green-50 border-green-200 h-9 w-full flex items-center justify-center">
-                            Standard Free Event
-                        </Badge>
-                    </div>
                 </div>
                  <div className="flex justify-end gap-4 border-t pt-6">
                     <Button variant="outline" onClick={() => router.back()}>Cancel</Button>

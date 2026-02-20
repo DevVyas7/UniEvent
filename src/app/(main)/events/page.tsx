@@ -62,8 +62,7 @@ export default function EventsPage() {
                   <p className="line-clamp-2">{event.location}</p>
                 </div>
               </CardContent>
-              <CardFooter className="pt-0 flex justify-between items-center">
-                <span className="text-[10px] font-bold text-accent uppercase tracking-wider">Free Access</span>
+              <CardFooter className="pt-0 flex justify-end items-center">
                 <Button asChild size="sm" variant={isJoined ? "outline" : "secondary"} className="h-8">
                   <Link href={`/events/${event.id}`}>Details</Link>
                 </Button>

@@ -142,9 +142,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                     </div>
                   ) : (
                     <>
-                      <div className="bg-green-100 text-green-700 px-3 py-2 rounded text-center text-xs font-bold uppercase">
-                        Free for All Students
-                      </div>
                       <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 h-12 text-lg">
                         <GraduationCap className="h-5 w-5" />
                         Join Event
