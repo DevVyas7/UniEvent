@@ -51,9 +51,6 @@ export function UserNav({ user }: UserNavProps) {
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/billing">Billing</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
             <Link href="/settings">Settings</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

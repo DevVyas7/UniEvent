@@ -3,7 +3,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from '@/components/layout/user-nav';
 import type { User } from '@/lib/types';
 import Link from 'next/link';
-import { Ticket, Menu } from 'lucide-react';
+import { GraduationCap, Menu } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { useSidebar } from '@/components/ui/sidebar';
@@ -21,8 +21,8 @@ export function Header({ user }: { user: User }) {
 
       <div className="flex flex-1 items-center gap-4">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <Ticket className="w-6 h-6 text-primary" />
-          {!isMobile && <span className="font-bold text-xl tracking-tight">EventVerse</span>}
+          <GraduationCap className="w-6 h-6 text-primary" />
+          {!isMobile && <span className="font-bold text-xl tracking-tight">UniEvent</span>}
         </Link>
       </div>
 
