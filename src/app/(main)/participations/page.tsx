@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { Award, Calendar as CalendarIcon, MapPin, ArrowLeft } from "lucide-react";
+import { Award, Calendar as CalendarIcon, MapPin, ArrowLeft, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -37,8 +37,18 @@ export default function ParticipationsPage() {
         {myJoinedEvents.map((event) => (
           <Card key={event.id} className="flex flex-col sm:flex-row items-stretch sm:items-center border-none shadow-md overflow-hidden bg-card hover:shadow-lg transition-all duration-300">
             <div className="flex-1 p-6">
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex flex-wrap items-center gap-3 mb-2">
                 <Badge variant="secondary" className="text-[10px] h-5 bg-primary/10 text-primary border-none uppercase tracking-widest">{event.department}</Badge>
+                {event.isCredit ? (
+                  <Badge variant="outline" className="text-[10px] h-5 bg-green-50 text-green-700 border-green-200 uppercase tracking-tighter">
+                    <GraduationCap className="w-3 h-3 mr-1" />
+                    Academic Credit
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-[10px] h-5 bg-muted text-muted-foreground border-none uppercase tracking-tighter">
+                    Non-Credit
+                  </Badge>
+                )}
                 <span className="text-xs text-muted-foreground font-medium">Joined on {new Date(event.date).toLocaleDateString()}</span>
               </div>
               <h3 className="text-2xl font-bold mb-3">{event.name}</h3>
@@ -86,6 +96,11 @@ export default function ParticipationsPage() {
                         <p className="text-lg max-w-md mx-auto leading-relaxed">For their successful participation and contribution to the event</p>
                         <p className="text-3xl font-extrabold text-primary uppercase tracking-tight">"{event.name}"</p>
                         <p className="text-sm font-semibold text-muted-foreground italic">Organized by the {event.department} Department</p>
+                        {event.isCredit && (
+                          <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest bg-green-50 w-fit mx-auto px-4 py-1 rounded-full border border-green-100">
+                             +1.0 Academic Credit Verified
+                          </p>
+                        )}
                       </div>
                       
                       <div className="pt-12 flex justify-between items-end border-t border-primary/10">
