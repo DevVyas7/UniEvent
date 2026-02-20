@@ -149,7 +149,7 @@ export default function DashboardPage() {
 
         <div className="lg:col-span-2 space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full relative">
+            <Card className="border-none shadow-md bg-card hover:bg-muted/5 transition-colors cursor-pointer h-full relative">
               <Link href="/participations" className="absolute inset-0 z-10" />
               <CardHeader>
                 <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
@@ -163,7 +163,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full relative">
+            <Card className="border-none shadow-md bg-card hover:bg-muted/5 transition-colors cursor-pointer h-full relative">
               <Link href="/events" className="absolute inset-0 z-10" />
               <CardHeader>
                 <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
