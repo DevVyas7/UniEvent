@@ -4,7 +4,7 @@ import { events } from "@/lib/placeholder-data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Award, Calendar as CalendarIcon, MapPin, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -104,7 +104,13 @@ export default function ParticipationsPage() {
                           <p className="text-[10px] font-black uppercase tracking-widest">Dept. Coordinator</p>
                         </div>
                       </div>
-                      <div className="pt-8 no-print">
+                      <div className="pt-8 no-print flex items-center justify-center gap-4">
+                        <DialogClose asChild>
+                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Back
+                          </Button>
+                        </DialogClose>
                         <Button size="sm" variant="outline" className="text-[10px] uppercase font-bold tracking-widest hover:bg-primary hover:text-primary-foreground transition-all rounded-full" onClick={() => window.print()}>
                           Print to PDF / Save Record
                         </Button>

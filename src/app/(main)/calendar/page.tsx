@@ -3,7 +3,9 @@ import * as React from 'react';
 import { Calendar } from "@/components/ui/calendar";
 import { events } from "@/lib/placeholder-data";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function CalendarPage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -65,6 +67,13 @@ export default function CalendarPage() {
 
   return (
     <div className="space-y-8">
+      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
+        <Link href="/dashboard">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
+        </Link>
+      </Button>
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Event Calendar</h1>
         <p className="text-muted-foreground">

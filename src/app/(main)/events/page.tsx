@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { events } from "@/lib/placeholder-data";
-import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap } from "lucide-react";
+import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function EventsPage() {
@@ -12,6 +12,13 @@ export default function EventsPage() {
 
   return (
     <div className="space-y-8">
+      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
+        <Link href="/dashboard">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
+        </Link>
+      </Button>
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight">University Events</h1>
         <p className="text-muted-foreground">Browse workshops, seminars, and cultural meets from all departments.</p>
