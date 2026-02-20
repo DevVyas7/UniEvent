@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Award, Calendar as CalendarIcon, MapPin } from "lucide-react";
+import { Award, Calendar as CalendarIcon, MapPin, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -21,6 +21,13 @@ export default function ParticipationsPage() {
 
   return (
     <div className="space-y-8">
+      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
+        <Link href="/dashboard">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
+        </Link>
+      </Button>
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight">My Participations</h1>
         <p className="text-muted-foreground">Track your academic engagement and collect your achievement certificates.</p>
@@ -54,7 +61,7 @@ export default function ParticipationsPage() {
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl p-0 overflow-hidden border-none">
                   <DialogHeader className="bg-primary p-6 text-primary-foreground">
-                    <DialogTitle className="text-2xl font-bold text-center">Participation Achievement</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold text-center text-primary-foreground">Participation Achievement</DialogTitle>
                   </DialogHeader>
                   <div className="p-1 bg-gradient-to-br from-primary via-accent to-primary">
                     <div className="p-12 bg-white text-black text-center space-y-8 relative overflow-hidden rounded-lg">

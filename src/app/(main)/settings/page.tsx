@@ -6,13 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SettingsPage() {
   const { toast } = useToast();
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('light');
 
   useEffect(() => {
-    // Initialize theme from localStorage on component mount
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system' || 'light';
     setTheme(savedTheme);
   }, []);
@@ -46,12 +47,19 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
+      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
+        <Link href="/dashboard">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
+        </Link>
+      </Button>
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
         <p className="text-muted-foreground">Configure your account preferences and notifications.</p>
       </div>
 
-      <Card>
+      <Card className="border-none shadow-xl">
         <CardHeader>
           <CardTitle>Notifications</CardTitle>
           <CardDescription>Control how you receive alerts and updates.</CardDescription>
@@ -60,36 +68,36 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label>Email Notifications</Label>
-              <p className="text-sm text-muted-foreground">Receive updates about booked events via email.</p>
+              <p className="text-sm text-muted-foreground">Receive updates about joined events via email.</p>
             </div>
             <Switch defaultChecked />
           </div>
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label>Browser Notifications</Label>
-              <p className="text-sm text-muted-foreground">Get real-time alerts in your browser.</p>
+              <p className="text-sm text-muted-foreground">Get real-time alerts for upcoming schedules.</p>
             </div>
             <Switch defaultChecked />
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-none shadow-xl">
         <CardHeader>
           <CardTitle>Appearance</CardTitle>
           <CardDescription>Customize the look and feel of UniEvent.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid gap-2">
-            <Label htmlFor="theme">Theme</Label>
+            <Label htmlFor="theme">Theme Preference</Label>
             <Select value={theme} onValueChange={handleThemeChange}>
-              <SelectTrigger id="theme">
+              <SelectTrigger id="theme" className="h-11">
                 <SelectValue placeholder="Select a theme" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="light">Light Mode</SelectItem>
+                <SelectItem value="dark">Dark Mode</SelectItem>
+                <SelectItem value="system">System Default</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -97,8 +105,8 @@ export default function SettingsPage() {
       </Card>
 
       <div className="flex justify-end gap-4">
-        <Button variant="outline">Reset Defaults</Button>
-        <Button className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleSave}>Save Preferences</Button>
+        <Button variant="outline" className="h-11 px-6">Reset Defaults</Button>
+        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 font-bold" onClick={handleSave}>Save Preferences</Button>
       </div>
     </div>
   );

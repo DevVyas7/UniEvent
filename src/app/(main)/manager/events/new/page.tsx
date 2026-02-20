@@ -9,10 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Loader2, Sparkles, GraduationCap } from "lucide-react";
+import { Loader2, Sparkles, GraduationCap, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateEventDescription } from "@/ai/flows/generate-event-description";
-import { Badge } from "@/components/ui/badge";
+import Link from 'next/link';
 
 export default function NewDepartmentEventPage() {
   const router = useRouter();
@@ -76,7 +76,14 @@ export default function NewDepartmentEventPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto space-y-8">
+        <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
+            <Link href="/manager/dashboard">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Manager Dashboard
+            </Link>
+        </Button>
+
         <Card className="border-none shadow-xl">
             <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
@@ -94,11 +101,12 @@ export default function NewDepartmentEventPage() {
                         placeholder="e.g., Computer Science Hackathon" 
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="h-11"
                       />
                   </div>
                   <div className="space-y-2">
                       <Label>Credit Type</Label>
-                      <div className="flex items-center space-x-4 h-10 px-3 border rounded-md bg-muted/5">
+                      <div className="flex items-center space-x-4 h-11 px-3 border rounded-md bg-muted/5">
                         <Switch 
                           id="isCredit" 
                           checked={formData.isCredit}
@@ -149,6 +157,7 @@ export default function NewDepartmentEventPage() {
                           type="date" 
                           value={formData.date}
                           onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                          className="h-11"
                         />
                     </div>
                      <div className="space-y-2">
@@ -159,6 +168,7 @@ export default function NewDepartmentEventPage() {
                           placeholder="e.g., 2:00 PM - 5:00 PM"
                           value={formData.time}
                           onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                          className="h-11"
                         />
                     </div>
                 </div>
@@ -170,6 +180,7 @@ export default function NewDepartmentEventPage() {
                           placeholder="e.g., Science Block B, Room 301" 
                           value={formData.location}
                           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                          className="h-11"
                         />
                     </div>
                     <div className="space-y-2">
@@ -179,6 +190,7 @@ export default function NewDepartmentEventPage() {
                           placeholder="e.g., Computer Science" 
                           value={formData.department}
                           onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                          className="h-11"
                         />
                     </div>
                 </div>
@@ -186,7 +198,7 @@ export default function NewDepartmentEventPage() {
                     <div className="space-y-2">
                         <Label htmlFor="category">Category</Label>
                         <Select onValueChange={(v) => setFormData({ ...formData, category: v })}>
-                            <SelectTrigger id="category">
+                            <SelectTrigger id="category" className="h-11">
                                 <SelectValue placeholder="Select type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -202,8 +214,8 @@ export default function NewDepartmentEventPage() {
                     </div>
                 </div>
                  <div className="flex justify-end gap-4 border-t pt-6">
-                    <Button variant="outline" onClick={() => router.back()}>Cancel</Button>
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePublish}>Publish to Students</Button>
+                    <Button variant="outline" onClick={() => router.back()} className="h-11 px-8">Cancel</Button>
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 font-bold shadow-lg" onClick={handlePublish}>Publish to Students</Button>
                 </div>
             </CardContent>
         </Card>
