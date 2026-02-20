@@ -16,3 +16,13 @@ export type Event = {
   department: string;
   category: string;
 };
+
+export type CollaborationRequest = {
+  id: string;
+  userId: string;
+  userName: string;
+  eventId: string;
+  eventName: string;
+  message: string;
+  skillsNeeded: string[];
+};
