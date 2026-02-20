@@ -3,10 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { events } from "@/lib/placeholder-data";
-import { Search, MapPin, Calendar as CalendarIcon, Building2 } from "lucide-react";
+import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function EventsPage() {
+  // Mock joined events are IDs 4 and 5
+  const joinedEventIds = ['4', '5'];
+
   return (
     <div className="space-y-8">
       <div>
@@ -20,30 +23,42 @@ export default function EventsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {events.map((event) => (
-          <Card key={event.id} className="flex flex-col h-full border-none shadow-md overflow-hidden">
-            <CardHeader className="pb-2">
-              <Badge variant="secondary" className="mb-2 w-fit bg-primary/10 text-primary border-none">{event.department}</Badge>
-              <CardTitle className="text-lg line-clamp-1">{event.name}</CardTitle>
-              <CardDescription className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
-                <CalendarIcon className="h-3 w-3" />
-                {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1 pb-2">
-              <div className="flex items-start gap-1.5 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
-                <p className="line-clamp-2">{event.location}</p>
-              </div>
-            </CardContent>
-            <CardFooter className="pt-0 flex justify-between items-center">
-              <span className="text-[10px] font-bold text-accent uppercase tracking-wider">Free Access</span>
-              <Button asChild size="sm" variant="secondary" className="h-8">
-                <Link href={`/events/${event.id}`}>Details</Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {events.map((event) => {
+          const isJoined = joinedEventIds.includes(event.id);
+          
+          return (
+            <Card key={event.id} className="flex flex-col h-full border-none shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-start mb-2">
+                  <Badge variant="secondary" className="bg-primary/10 text-primary border-none">{event.department}</Badge>
+                  {isJoined && (
+                    <Badge className="bg-green-500/10 text-green-600 border-none flex gap-1 items-center px-2">
+                      <CheckCircle2 className="w-3 h-3" />
+                      Joined
+                    </Badge>
+                  )}
+                </div>
+                <CardTitle className="text-lg line-clamp-1">{event.name}</CardTitle>
+                <CardDescription className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+                  <CalendarIcon className="h-3 w-3" />
+                  {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 pb-2">
+                <div className="flex items-start gap-1.5 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
+                  <p className="line-clamp-2">{event.location}</p>
+                </div>
+              </CardContent>
+              <CardFooter className="pt-0 flex justify-between items-center">
+                <span className="text-[10px] font-bold text-accent uppercase tracking-wider">Free Access</span>
+                <Button asChild size="sm" variant={isJoined ? "outline" : "secondary"} className="h-8">
+                  <Link href={`/events/${event.id}`}>Details</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

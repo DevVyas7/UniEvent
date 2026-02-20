@@ -4,7 +4,7 @@ import React, { useEffect, useState, use } from "react";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2 } from "lucide-react";
+import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,8 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   });
   
   const isStudent = userRole === 'student' || !userRole;
+  // Mock logic: events 4 and 5 are "joined" in our placeholder data slice used across the app
+  const isJoined = id === '4' || id === '5';
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -103,14 +105,29 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
               {isStudent && (
                 <div className="pt-6 border-t space-y-4">
-                  <div className="bg-green-100 text-green-700 px-3 py-2 rounded text-center text-xs font-bold uppercase">
-                    Free for All Students
-                  </div>
-                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 h-12 text-lg">
-                    <GraduationCap className="h-5 w-5" />
-                    Join Event
-                  </Button>
-                  <p className="text-[10px] text-center text-muted-foreground italic">Joining confirms your participation for departmental records.</p>
+                  {isJoined ? (
+                    <div className="bg-primary/5 text-primary px-3 py-6 rounded-xl text-center border border-primary/20 space-y-3">
+                       <CheckCircle2 className="w-8 h-8 mx-auto text-primary" />
+                       <div>
+                        <p className="font-bold text-sm uppercase tracking-tight">You've Joined This Event</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">Your participation is recorded for departmental records.</p>
+                       </div>
+                       <Button variant="outline" size="sm" className="w-full text-[10px] uppercase font-bold tracking-widest" asChild>
+                          <Link href="/participations">View in Participations</Link>
+                       </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="bg-green-100 text-green-700 px-3 py-2 rounded text-center text-xs font-bold uppercase">
+                        Free for All Students
+                      </div>
+                      <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 h-12 text-lg">
+                        <GraduationCap className="h-5 w-5" />
+                        Join Event
+                      </Button>
+                      <p className="text-[10px] text-center text-muted-foreground italic">Joining confirms your participation for departmental records.</p>
+                    </>
+                  )}
                 </div>
               )}
             </div>
