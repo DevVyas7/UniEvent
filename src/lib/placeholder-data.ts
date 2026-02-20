@@ -1,4 +1,4 @@
-import type { User, Event, CollaborationRequest } from './types';
+import type { User, Event } from './types';
 
 export const users: User[] = [
   {
@@ -88,26 +88,5 @@ export const events: Event[] = [
     organizerId: '2',
     department: 'Physical Education',
     category: 'Sports',
-  },
-];
-
-export const collaborationRequests: CollaborationRequest[] = [
-  {
-    id: 'c1',
-    userId: '3',
-    userName: 'Alice Smith',
-    eventId: '1',
-    eventName: 'Annual Hackathon 2024',
-    message: 'Looking for a UI designer to help with our education tech project!',
-    skillsNeeded: ['Figma', 'React', 'Creative Writing'],
-  },
-  {
-    id: 'c2',
-    userId: '4',
-    userName: 'Bob Johnson',
-    eventId: '3',
-    eventName: 'Robotics Workshop',
-    message: 'I have some experience with Arduino, looking for a partner to build a maze-solving bot.',
-    skillsNeeded: ['Arduino', 'C++', 'Problem Solving'],
   },
 ];

@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { events, collaborationRequests } from "@/lib/placeholder-data";
-import { ArrowRight, MapPin, Calendar as CalendarIcon, Users as UsersIcon, Award, MessageSquare } from "lucide-react";
+import { events } from "@/lib/placeholder-data";
+import { ArrowRight, MapPin, Calendar as CalendarIcon, Award } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function DashboardPage() {
   const [userRole, setUserRole] = useState<'student' | 'organizer' | 'admin' | null>(null);
@@ -83,118 +83,79 @@ export default function DashboardPage() {
       </section>
 
       {isStudent && (
-        <div className="grid gap-8 lg:grid-cols-3">
-          <section className="lg:col-span-2 space-y-4">
-            <h2 className="text-2xl font-semibold">My Participations</h2>
-            <div className="grid gap-4">
-                {myJoinedEvents.map((event) => (
-                    <Card key={event.id} className="flex flex-col sm:flex-row items-start sm:items-center border-none shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex-1 p-4">
-                            <div className="flex items-center gap-2 mb-1">
-                               <h3 className="font-semibold">{event.name}</h3>
-                               <Badge variant="secondary" className="text-[10px] h-4">{event.department}</Badge>
-                            </div>
-                            <p className="text-sm text-muted-foreground">{new Date(event.date).toLocaleDateString()} at {event.time}</p>
-                            <p className="text-sm text-muted-foreground">{event.location}</p>
-                        </div>
-                        <div className="p-4 flex gap-2 w-full sm:w-auto">
-                            <Button variant="outline" size="sm" className="flex-1 sm:flex-none" asChild>
-                                <Link href={`/events/${event.id}`}>View Info</Link>
-                            </Button>
-                            
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button size="sm" className="bg-primary/10 text-primary hover:bg-primary/20 border-none flex-1 sm:flex-none gap-1.5">
-                                        <Award className="h-4 w-4" />
-                                        Certificate
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent className="max-w-2xl">
-                                    <div className="p-8 border-4 border-double border-primary/20 rounded-lg text-center space-y-6 relative overflow-hidden bg-white text-black">
-                                        {/* Certificate Pattern */}
-                                        <div className="absolute top-0 left-0 w-24 h-24 bg-primary/5 rounded-br-full -z-10" />
-                                        <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-tl-full -z-10" />
-                                        
-                                        <div className="space-y-2">
-                                            <h2 className="text-4xl font-serif text-primary">Certificate of Participation</h2>
-                                            <p className="text-sm uppercase tracking-widest text-muted-foreground">Inter-University Event Management System</p>
-                                        </div>
-                                        
-                                        <div className="py-6 space-y-4">
-                                            <p className="text-lg">This is to certify that</p>
-                                            <p className="text-3xl font-bold border-b-2 border-primary/10 inline-block px-10 pb-1">{userName}</p>
-                                            <p className="text-lg px-10">has successfully participated in the university event</p>
-                                            <p className="text-2xl font-semibold text-primary">"{event.name}"</p>
-                                            <p className="text-sm text-muted-foreground">organized by the {event.department} department</p>
-                                        </div>
-                                        
-                                        <div className="pt-10 flex justify-between items-end">
-                                            <div className="text-left">
-                                                <div className="w-32 border-b border-black/30 h-10 mb-2"></div>
-                                                <p className="text-xs font-bold uppercase">Registrar</p>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-2 mx-auto">
-                                                    <Award className="w-10 h-10 text-primary" />
-                                                </div>
-                                                <p className="text-[10px] text-muted-foreground">{new Date().toLocaleDateString()}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="w-32 border-b border-black/30 h-10 mb-2 italic text-xs flex items-center justify-center">Digital Seal</div>
-                                                <p className="text-xs font-bold uppercase">Dept. Coordinator</p>
-                                            </div>
-                                        </div>
-                                        <div className="pt-6">
-                                            <Button size="sm" variant="ghost" className="text-[10px] uppercase tracking-tighter text-muted-foreground" onClick={() => window.print()}>
-                                                Click here to save as PDF / Print
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </DialogContent>
-                            </Dialog>
-                        </div>
-                    </Card>
-                ))}
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <h2 className="text-2xl font-semibold">Collaborators Matcher</h2>
-            <Card className="border-none shadow-md">
-                <CardHeader className="pb-2">
-                    <CardTitle className="text-base flex items-center gap-2">
-                        <UsersIcon className="h-4 w-4 text-primary" />
-                        Find Teammates
-                    </CardTitle>
-                    <CardDescription>Join forces with other students for upcoming competitions.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {collaborationRequests.map(req => (
-                        <div key={req.id} className="p-3 bg-muted/30 rounded-lg border border-muted-foreground/10 space-y-2">
-                            <div className="flex justify-between items-start">
-                                <p className="text-xs font-bold text-primary">{req.userName}</p>
-                                <Badge variant="secondary" className="text-[9px] px-1.5 h-4">Need Team</Badge>
-                            </div>
-                            <p className="text-[10px] font-medium leading-tight text-muted-foreground italic">"{req.eventName}"</p>
-                            <p className="text-xs line-clamp-2">{req.message}</p>
-                            <div className="flex flex-wrap gap-1">
-                                {req.skillsNeeded.map(skill => (
-                                    <span key={skill} className="text-[8px] bg-primary/5 text-primary border border-primary/10 px-1 rounded-sm">{skill}</span>
-                                ))}
-                            </div>
-                            <Button size="sm" variant="ghost" className="w-full h-7 text-[10px] mt-1 border border-primary/10 hover:bg-primary/5">
-                                <MessageSquare className="h-3 w-3 mr-1" />
-                                Contact Alice
-                            </Button>
-                        </div>
-                    ))}
-                    <Button variant="outline" className="w-full border-dashed text-xs text-muted-foreground hover:bg-primary/5">
-                        Post a Request
-                    </Button>
-                </CardContent>
-            </Card>
-          </section>
-        </div>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">My Participations</h2>
+          <div className="grid gap-4">
+              {myJoinedEvents.map((event) => (
+                  <Card key={event.id} className="flex flex-col sm:flex-row items-start sm:items-center border-none shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-1 p-4">
+                          <div className="flex items-center gap-2 mb-1">
+                             <h3 className="font-semibold">{event.name}</h3>
+                             <Badge variant="secondary" className="text-[10px] h-4">{event.department}</Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">{new Date(event.date).toLocaleDateString()} at {event.time}</p>
+                          <p className="text-sm text-muted-foreground">{event.location}</p>
+                      </div>
+                      <div className="p-4 flex gap-2 w-full sm:w-auto">
+                          <Button variant="outline" size="sm" className="flex-1 sm:flex-none" asChild>
+                              <Link href={`/events/${event.id}`}>View Info</Link>
+                          </Button>
+                          
+                          <Dialog>
+                              <DialogTrigger asChild>
+                                  <Button size="sm" className="bg-primary/10 text-primary hover:bg-primary/20 border-none flex-1 sm:flex-none gap-1.5">
+                                      <Award className="h-4 w-4" />
+                                      Certificate
+                                  </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-2xl">
+                                  <div className="p-8 border-4 border-double border-primary/20 rounded-lg text-center space-y-6 relative overflow-hidden bg-white text-black">
+                                      {/* Certificate Pattern */}
+                                      <div className="absolute top-0 left-0 w-24 h-24 bg-primary/5 rounded-br-full -z-10" />
+                                      <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-tl-full -z-10" />
+                                      
+                                      <div className="space-y-2">
+                                          <h2 className="text-4xl font-serif text-primary">Certificate of Participation</h2>
+                                          <p className="text-sm uppercase tracking-widest text-muted-foreground">Inter-University Event Management System</p>
+                                      </div>
+                                      
+                                      <div className="py-6 space-y-4">
+                                          <p className="text-lg">This is to certify that</p>
+                                          <p className="text-3xl font-bold border-b-2 border-primary/10 inline-block px-10 pb-1">{userName}</p>
+                                          <p className="text-lg px-10">has successfully participated in the university event</p>
+                                          <p className="text-2xl font-semibold text-primary">"{event.name}"</p>
+                                          <p className="text-sm text-muted-foreground">organized by the {event.department} department</p>
+                                      </div>
+                                      
+                                      <div className="pt-10 flex justify-between items-end">
+                                          <div className="text-left">
+                                              <div className="w-32 border-b border-black/30 h-10 mb-2"></div>
+                                              <p className="text-xs font-bold uppercase">Registrar</p>
+                                          </div>
+                                          <div className="text-center">
+                                              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-2 mx-auto">
+                                                  <Award className="w-10 h-10 text-primary" />
+                                              </div>
+                                              <p className="text-[10px] text-muted-foreground">{new Date().toLocaleDateString()}</p>
+                                          </div>
+                                          <div className="text-right">
+                                              <div className="w-32 border-b border-black/30 h-10 mb-2 italic text-xs flex items-center justify-center">Digital Seal</div>
+                                              <p className="text-xs font-bold uppercase">Dept. Coordinator</p>
+                                          </div>
+                                      </div>
+                                      <div className="pt-6">
+                                          <Button size="sm" variant="ghost" className="text-[10px] uppercase tracking-tighter text-muted-foreground" onClick={() => window.print()}>
+                                              Click here to save as PDF / Print
+                                          </Button>
+                                      </div>
+                                  </div>
+                              </DialogContent>
+                          </Dialog>
+                      </div>
+                  </Card>
+              ))}
+          </div>
+        </section>
       )}
     </div>
   )
