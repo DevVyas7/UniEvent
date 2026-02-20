@@ -14,23 +14,25 @@ import {
   User as UserIcon,
   BookOpen
 } from "lucide-react";
-import { events } from "@/lib/placeholder-data";
+import { events, users } from "@/lib/placeholder-data";
+import type { User } from "@/lib/types";
 
 export default function DashboardPage() {
-  const [userName, setUserName] = useState<string>("Student");
-  const [userRole, setUserRole] = useState<string>("");
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
     const role = localStorage.getItem('userRole') || 'student';
-    setUserRole(role);
-    if (role === 'student') {
-      setUserName("Alice Smith");
+    const foundUser = users.find(u => u.role === role) || users.find(u => u.role === 'student');
+    if (foundUser) {
+      setCurrentUser(foundUser);
     }
   }, []);
 
   const joinedEvents = events.slice(3, 5); 
   const totalParticipated = joinedEvents.length;
   const upcomingEventsCount = events.length - totalParticipated;
+
+  if (!currentUser) return null;
 
   return (
     <div className="space-y-8 pb-10">
@@ -42,7 +44,7 @@ export default function DashboardPage() {
               <span>University Student Portal</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-              Welcome back, <span className="text-accent">{userName}</span>!
+              Welcome back, <span className="text-accent">{currentUser.name}</span>!
             </h1>
             <p className="max-w-xl text-lg opacity-90">
               Stay updated with your campus activities, track your departmental participations, and download your achievements.
@@ -112,8 +114,8 @@ export default function DashboardPage() {
                    <UserIcon className="h-12 w-12 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">{userName}</h3>
-                  <Badge variant="outline" className="mt-2 bg-primary/5 text-primary border-primary/20">Engineering Dept</Badge>
+                  <h3 className="text-xl font-bold">{currentUser.name}</h3>
+                  <Badge variant="outline" className="mt-2 bg-primary/5 text-primary border-primary/20">{currentUser.department || 'Academic Dept'}</Badge>
                 </div>
              </div>
           </CardHeader>
@@ -121,7 +123,7 @@ export default function DashboardPage() {
             <div className="space-y-4">
                <div className="flex justify-between items-center text-sm">
                   <span className="text-muted-foreground">Student ID:</span>
-                  <span className="font-bold">UNI-99421</span>
+                  <span className="font-bold">{currentUser.enrollmentNumber || 'TBD'}</span>
                </div>
                <div className="flex justify-between items-center text-sm">
                   <span className="text-muted-foreground">Semester:</span>

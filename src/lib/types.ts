@@ -3,6 +3,8 @@ export type User = {
   name: string;
   email: string;
   role: 'student' | 'organizer' | 'admin';
+  department?: string;
+  enrollmentNumber?: string;
 };
 
 export type Event = {

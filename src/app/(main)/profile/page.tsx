@@ -52,6 +52,16 @@ export default function ProfilePage() {
               <Label htmlFor="role">Campus Role</Label>
               <Input id="role" defaultValue={user.role} disabled className="capitalize" />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="department">Department</Label>
+              <Input id="department" defaultValue={user.department} disabled />
+              <p className="text-xs text-muted-foreground">Your assigned academic department.</p>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="enrollment">Enrollment / ID Number</Label>
+              <Input id="enrollment" defaultValue={user.enrollmentNumber} disabled />
+              <p className="text-xs text-muted-foreground">Unique identifier provided by the university.</p>
+            </div>
           </div>
           <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Save Changes</Button>
         </CardContent>
