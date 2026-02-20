@@ -19,7 +19,7 @@ import {
   Bot,
   Shield,
   Briefcase,
-  UserCircle,
+  Award,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -29,6 +29,7 @@ interface AppSidebarProps {
 const menuItems = [
   { href: '/dashboard', label: 'Student Portal', icon: LayoutDashboard, roles: ['student', 'organizer', 'admin'] },
   { href: '/events', label: 'Campus Events', icon: GraduationCap, roles: ['student', 'organizer', 'admin'] },
+  { href: '/participations', label: 'My Participations', icon: Award, roles: ['student'] },
 ];
 
 const organizerMenuItems = [
