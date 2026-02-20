@@ -23,20 +23,17 @@ export default function DashboardPage() {
   useEffect(() => {
     const role = localStorage.getItem('userRole') || 'student';
     setUserRole(role);
-    // Mock user for Alice Smith
     if (role === 'student') {
       setUserName("Alice Smith");
     }
   }, []);
 
-  // Mock joined events for the student Alice
   const joinedEvents = events.slice(3, 5); 
   const totalParticipated = joinedEvents.length;
   const upcomingEventsCount = events.length - totalParticipated;
 
   return (
     <div className="space-y-8 pb-10">
-      {/* Welcome Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-primary px-8 py-12 text-primary-foreground shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="space-y-4">
@@ -57,12 +54,10 @@ export default function DashboardPage() {
             </Button>
           </div>
         </div>
-        {/* Decorative elements */}
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
         <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
       </div>
 
-      {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="border-none shadow-md hover:shadow-lg transition-shadow bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -109,9 +104,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Main Content Areas */}
       <div className="grid gap-8 lg:grid-cols-3">
-        {/* Student Profile Card */}
         <Card className="lg:col-span-1 border-none shadow-xl overflow-hidden">
           <CardHeader className="bg-muted/30 pb-8">
              <div className="flex flex-col items-center text-center space-y-4">
@@ -148,11 +141,10 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Action Center */}
         <div className="lg:col-span-2 space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors group cursor-pointer" asChild>
-              <Link href="/participations">
+            <Link href="/participations" className="block group">
+              <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full">
                 <CardHeader>
                   <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
                     <Award className="h-6 w-6 text-accent" />
@@ -163,11 +155,11 @@ export default function DashboardPage() {
                 <CardContent className="flex justify-end">
                   <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-1" />
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
-            <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors group cursor-pointer" asChild>
-              <Link href="/events">
+            <Link href="/events" className="block group">
+              <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full">
                 <CardHeader>
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                     <CalendarDays className="h-6 w-6 text-primary" />
@@ -178,8 +170,8 @@ export default function DashboardPage() {
                 <CardContent className="flex justify-end">
                   <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-1" />
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
           </div>
 
           <Card className="border-none shadow-md bg-gradient-to-r from-muted/30 to-background">
