@@ -41,7 +41,7 @@ export default function ParticipationsPage() {
                 <Badge variant="secondary" className="text-[10px] h-5 bg-primary/10 text-primary border-none uppercase tracking-widest">{event.department}</Badge>
                 {event.isCredit ? (
                   <Badge variant="outline" className="text-[10px] h-5 bg-green-50 text-green-700 border-green-200 uppercase tracking-tighter">
-                    <GraduationCap className="w-3 h-3 mr-1" />
+                    < GraduationCap className="w-3 h-3 mr-1" />
                     Academic Credit
                   </Badge>
                 ) : (
@@ -74,7 +74,7 @@ export default function ParticipationsPage() {
                     <DialogTitle className="text-2xl font-bold text-center text-primary-foreground">Participation Achievement</DialogTitle>
                   </DialogHeader>
                   <div className="p-1 bg-gradient-to-br from-primary via-accent to-primary">
-                    <div className="p-12 bg-white text-black text-center space-y-8 relative overflow-hidden rounded-lg">
+                    <div className="p-12 bg-white dark:bg-slate-950 text-black dark:text-white text-center space-y-8 relative overflow-hidden rounded-lg">
                       {/* Certificate Decorations */}
                       <div className="absolute top-0 left-0 w-32 h-32 bg-primary/5 rounded-br-full -z-10" />
                       <div className="absolute bottom-0 right-0 w-32 h-32 bg-primary/5 rounded-tl-full -z-10" />
@@ -97,7 +97,7 @@ export default function ParticipationsPage() {
                         <p className="text-3xl font-extrabold text-primary uppercase tracking-tight">"{event.name}"</p>
                         <p className="text-sm font-semibold text-muted-foreground italic">Organized by the {event.department} Department</p>
                         {event.isCredit && (
-                          <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest bg-green-50 w-fit mx-auto px-4 py-1 rounded-full border border-green-100">
+                          <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest bg-green-50 dark:bg-green-900/20 w-fit mx-auto px-4 py-1 rounded-full border border-green-100 dark:border-green-800">
                              +1.0 Academic Credit Verified
                           </p>
                         )}
@@ -105,7 +105,7 @@ export default function ParticipationsPage() {
                       
                       <div className="pt-12 flex justify-between items-end border-t border-primary/10">
                         <div className="text-left space-y-1">
-                          <div className="w-36 border-b border-black/20 h-8"></div>
+                          <div className="w-36 border-b border-black/20 dark:border-white/20 h-8"></div>
                           <p className="text-[10px] font-black uppercase tracking-widest">University Registrar</p>
                         </div>
                         <div className="text-center">
@@ -115,19 +115,20 @@ export default function ParticipationsPage() {
                           <p className="text-[10px] font-bold text-muted-foreground uppercase">{new Date().toLocaleDateString()}</p>
                         </div>
                         <div className="text-right space-y-1">
-                          <div className="w-36 border-b border-black/20 h-8 flex items-center justify-center italic text-[10px] text-primary/40 font-serif">Verified Digital Seal</div>
+                          <div className="w-36 border-b border-black/20 dark:border-white/20 h-8 flex items-center justify-center italic text-[10px] text-primary/40 font-serif">Verified Digital Seal</div>
                           <p className="text-[10px] font-black uppercase tracking-widest">Dept. Coordinator</p>
                         </div>
                       </div>
-                      <div className="pt-8 no-print flex items-center justify-center gap-4">
+                      
+                      <div className="pt-8 no-print flex flex-col sm:flex-row items-center justify-center gap-4">
                         <DialogClose asChild>
-                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back
+                          <Button variant="outline" className="w-full sm:w-auto gap-2">
+                            <ArrowLeft className="h-4 w-4" />
+                            Back to List
                           </Button>
                         </DialogClose>
-                        <Button size="sm" variant="outline" className="text-[10px] uppercase font-bold tracking-widest hover:bg-primary hover:text-primary-foreground transition-all rounded-full" onClick={() => window.print()}>
-                          Print to PDF / Save Record
+                        <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => window.print()}>
+                          Print Certificate
                         </Button>
                       </div>
                     </div>
