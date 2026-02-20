@@ -15,24 +15,28 @@ import {
   BookOpen
 } from "lucide-react";
 import { events, users } from "@/lib/placeholder-data";
-import type { User } from "@/lib/types";
+import type { User, Event } from "@/lib/types";
 
 export default function DashboardPage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const role = localStorage.getItem('userRole') || 'student';
     const foundUser = users.find(u => u.role === role) || users.find(u => u.role === 'student');
     if (foundUser) {
       setCurrentUser(foundUser);
+      // Mock joined events are 4 and 5 in placeholder data
+      const mockJoined = events.filter(e => e.id === '4' || e.id === '5');
+      setJoinedEvents(mockJoined);
     }
   }, []);
 
-  const joinedEvents = events.slice(3, 5); 
+  if (!currentUser) return null;
+
   const totalParticipated = joinedEvents.length;
   const upcomingEventsCount = events.length - totalParticipated;
-
-  if (!currentUser) return null;
+  const earnedCredits = joinedEvents.reduce((acc, curr) => acc + (curr.isCredit ? 1.0 : 0), 0);
 
   return (
     <div className="space-y-8 pb-10">
@@ -96,12 +100,12 @@ export default function DashboardPage() {
 
         <Card className="border-none shadow-md hover:shadow-lg transition-shadow bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">GPA / Credits</CardTitle>
-            <BookOpen className="h-5 w-5 text-muted-foreground" />
+            <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Academic Credits</CardTitle>
+            <BookOpen className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black">N/A</div>
-            <p className="text-xs text-muted-foreground mt-1">Workshop credits pending</p>
+            <div className="text-3xl font-black">{earnedCredits.toFixed(1)}</div>
+            <p className="text-xs text-muted-foreground mt-1">Verified departmental credits</p>
           </CardContent>
         </Card>
       </div>
@@ -145,35 +149,33 @@ export default function DashboardPage() {
 
         <div className="lg:col-span-2 space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <Link href="/participations" className="block group">
-              <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full">
-                <CardHeader>
-                  <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
-                    <Award className="h-6 w-6 text-accent" />
-                  </div>
-                  <CardTitle className="text-xl">My Certificates</CardTitle>
-                  <CardDescription>Download and view your achievement records from joined events.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex justify-end">
-                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-1" />
-                </CardContent>
-              </Card>
-            </Link>
+            <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full relative">
+              <Link href="/participations" className="absolute inset-0 z-10" />
+              <CardHeader>
+                <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
+                  <Award className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle className="text-xl">My Certificates</CardTitle>
+                <CardDescription>Download and view your achievement records from joined events.</CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-end">
+                <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              </CardContent>
+            </Card>
 
-            <Link href="/events" className="block group">
-              <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full">
-                <CardHeader>
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
-                    <CalendarDays className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">Browse Events</CardTitle>
-                  <CardDescription>Discover new workshops, seminars, and festivals organized across campus.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex justify-end">
-                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-1" />
-                </CardContent>
-              </Card>
-            </Link>
+            <Card className="border-none shadow-md bg-white hover:bg-muted/5 transition-colors cursor-pointer h-full relative">
+              <Link href="/events" className="absolute inset-0 z-10" />
+              <CardHeader>
+                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                  <CalendarDays className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Browse Events</CardTitle>
+                <CardDescription>Discover new workshops, seminars, and festivals organized across campus.</CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-end">
+                <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              </CardContent>
+            </Card>
           </div>
 
           <Card className="border-none shadow-md bg-gradient-to-r from-muted/30 to-background">

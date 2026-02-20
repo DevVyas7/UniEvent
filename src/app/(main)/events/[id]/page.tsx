@@ -4,7 +4,7 @@ import React, { useEffect, useState, use } from "react";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2 } from "lucide-react";
+import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2, Award } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -56,7 +56,19 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
       <div className="bg-card rounded-2xl border-none shadow-xl overflow-hidden p-6 md:p-10">
         <div className="space-y-6">
           <div className="space-y-4">
-            <Badge className="bg-accent text-accent-foreground border-none px-4 py-1">{event.department}</Badge>
+            <div className="flex flex-wrap gap-2">
+              <Badge className="bg-accent text-accent-foreground border-none px-4 py-1">{event.department}</Badge>
+              {event.isCredit ? (
+                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 px-4 py-1">
+                  <GraduationCap className="w-4 h-4 mr-2" />
+                  Academic Credit (1.0)
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="bg-muted text-muted-foreground border-none px-4 py-1">
+                  Non-Credit Event
+                </Badge>
+              )}
+            </div>
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight">{event.name}</h1>
             <div className="flex items-center gap-2 text-muted-foreground">
                 <Building2 className="w-4 h-4" />
@@ -70,6 +82,18 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                 <h2 className="text-xl font-semibold">Description</h2>
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{event.description}</p>
               </div>
+
+              {event.isCredit && (
+                <div className="bg-green-50/50 border border-green-100 p-6 rounded-2xl space-y-3">
+                  <div className="flex items-center gap-2 text-green-800 font-bold">
+                    <Award className="w-5 h-5" />
+                    Academic Value
+                  </div>
+                  <p className="text-sm text-green-700 leading-relaxed">
+                    This event is recognized by the academic board. Successful participation grants **1.0 credit hour** towards your supplementary academic records.
+                  </p>
+                </div>
+              )}
             </div>
             
             <div className="space-y-6 bg-muted/20 p-6 rounded-2xl h-fit border border-muted">

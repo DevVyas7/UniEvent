@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Loader2, Sparkles, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateEventDescription } from "@/ai/flows/generate-event-description";
@@ -25,6 +26,7 @@ export default function NewDepartmentEventPage() {
     location: '',
     department: '',
     category: '',
+    isCredit: false,
   });
 
   const handleAiGenerateDescription = async () => {
@@ -46,8 +48,8 @@ export default function NewDepartmentEventPage() {
         eventLocation: formData.location || "TBD",
         eventType: formData.category || "University Event",
         targetAudience: "University Students",
-        keyFeatures: "Academic growth, Networking, Knowledge sharing",
-        additionalNotes: `Organized by the ${formData.department || 'Academic'} department.`
+        keyFeatures: formData.isCredit ? "Academic growth, Networking, Knowledge sharing, ECTS Credits" : "Academic growth, Networking, Knowledge sharing",
+        additionalNotes: `Organized by the ${formData.department || 'Academic'} department. ${formData.isCredit ? 'This is a credit-bearing event.' : ''}`
       });
       setFormData(prev => ({ ...prev, description: result.description }));
       toast({
@@ -84,15 +86,38 @@ export default function NewDepartmentEventPage() {
                 <CardDescription>All university events are free for participants. Fill in the details to invite students.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div className="space-y-2">
-                    <Label htmlFor="eventName">Event Title</Label>
-                    <Input 
-                      id="eventName" 
-                      placeholder="e.g., Computer Science Hackathon" 
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                      <Label htmlFor="eventName">Event Title</Label>
+                      <Input 
+                        id="eventName" 
+                        placeholder="e.g., Computer Science Hackathon" 
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      />
+                  </div>
+                  <div className="space-y-2">
+                      <Label>Credit Type</Label>
+                      <div className="flex items-center space-x-4 h-10 px-3 border rounded-md bg-muted/5">
+                        <Switch 
+                          id="isCredit" 
+                          checked={formData.isCredit}
+                          onCheckedChange={(v) => setFormData({ ...formData, isCredit: v })}
+                        />
+                        <Label htmlFor="isCredit" className="flex items-center gap-2 cursor-pointer font-bold">
+                          {formData.isCredit ? (
+                            <>
+                              <GraduationCap className="w-4 h-4 text-primary" />
+                              Academic Credit
+                            </>
+                          ) : (
+                            <span className="text-muted-foreground font-normal">Non-Credit Event</span>
+                          )}
+                        </Label>
+                      </div>
+                  </div>
                 </div>
+
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="description">Detailed Description</Label>

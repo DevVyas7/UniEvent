@@ -54,6 +54,7 @@ export const events: Event[] = [
     organizerId: '2',
     department: 'Computer Science',
     category: 'Tech',
+    isCredit: true,
   },
   {
     id: '2',
@@ -65,6 +66,7 @@ export const events: Event[] = [
     organizerId: '5',
     department: 'Social Sciences',
     category: 'Debate',
+    isCredit: false,
   },
   {
     id: '3',
@@ -76,6 +78,7 @@ export const events: Event[] = [
     organizerId: '2',
     department: 'Computer Science',
     category: 'Workshop',
+    isCredit: true,
   },
   {
     id: '4',
@@ -87,6 +90,7 @@ export const events: Event[] = [
     organizerId: '5',
     department: 'Arts & Humanities',
     category: 'Social',
+    isCredit: false,
   },
   {
     id: '5',
@@ -98,5 +102,6 @@ export const events: Event[] = [
     organizerId: '2',
     department: 'Physical Education',
     category: 'Sports',
+    isCredit: false,
   },
 ];

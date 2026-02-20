@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { events } from "@/lib/placeholder-data";
-import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2 } from "lucide-react";
+import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function EventsPage() {
@@ -30,7 +30,19 @@ export default function EventsPage() {
             <Card key={event.id} className="flex flex-col h-full border-none shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-start mb-2">
-                  <Badge variant="secondary" className="bg-primary/10 text-primary border-none">{event.department}</Badge>
+                  <div className="flex flex-col gap-1.5">
+                    <Badge variant="secondary" className="bg-primary/10 text-primary border-none w-fit">{event.department}</Badge>
+                    {event.isCredit ? (
+                      <Badge variant="outline" className="text-[10px] h-5 bg-green-50 text-green-700 border-green-200 uppercase tracking-tighter">
+                        <GraduationCap className="w-3 h-3 mr-1" />
+                        Academic Credit
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-[10px] h-5 bg-muted text-muted-foreground border-none uppercase tracking-tighter">
+                        Non-Credit
+                      </Badge>
+                    )}
+                  </div>
                   {isJoined && (
                     <Badge className="bg-green-500/10 text-green-600 border-none flex gap-1 items-center px-2">
                       <CheckCircle2 className="w-3 h-3" />

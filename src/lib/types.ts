@@ -17,4 +17,5 @@ export type Event = {
   organizerId: string;
   department: string;
   category: string;
+  isCredit: boolean;
 };
