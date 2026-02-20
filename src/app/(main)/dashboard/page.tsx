@@ -109,6 +109,9 @@ export default function DashboardPage() {
                                   </Button>
                               </DialogTrigger>
                               <DialogContent className="max-w-2xl">
+                                  <DialogHeader>
+                                      <DialogTitle>Participation Certificate Preview</DialogTitle>
+                                  </DialogHeader>
                                   <div className="p-8 border-4 border-double border-primary/20 rounded-lg text-center space-y-6 relative overflow-hidden bg-white text-black">
                                       {/* Certificate Pattern */}
                                       <div className="absolute top-0 left-0 w-24 h-24 bg-primary/5 rounded-br-full -z-10" />
