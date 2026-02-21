@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { events } from "@/lib/placeholder-data";
-import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap, ArrowLeft, Plus } from "lucide-react";
+import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap, ArrowLeft, Plus, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,6 +54,7 @@ export default function EventsPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {events.map((event) => {
           const isJoined = joinedEventIds.includes(event.id);
+          const isCompleted = event.status === 'completed';
           
           return (
             <Card key={event.id} className="flex flex-col h-full border-none shadow-md overflow-hidden hover:shadow-lg transition-shadow">
@@ -72,12 +73,20 @@ export default function EventsPage() {
                       </Badge>
                     )}
                   </div>
-                  {isJoined && (
-                    <Badge className="bg-green-500/10 text-green-600 border-none flex gap-1 items-center px-2">
-                      <CheckCircle2 className="w-3 h-3" />
-                      Joined
-                    </Badge>
-                  )}
+                  <div className="flex flex-col items-end gap-1">
+                    {isJoined && (
+                      <Badge className="bg-green-500/10 text-green-600 border-none flex gap-1 items-center px-2">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Joined
+                      </Badge>
+                    )}
+                    {isCompleted && (
+                      <Badge className="bg-blue-500/10 text-blue-600 border-none flex gap-1 items-center px-2">
+                        <Clock className="w-3 h-3" />
+                        Completed
+                      </Badge>
+                    )}
+                  </div>
                 </div>
                 <CardTitle className="text-lg line-clamp-1">{event.name}</CardTitle>
                 <CardDescription className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
@@ -95,7 +104,12 @@ export default function EventsPage() {
                 <Button asChild size="sm" variant="ghost" className="h-8 text-xs underline-offset-4 hover:underline">
                   <Link href={`/events/${event.id}`}>View Details</Link>
                 </Button>
-                {!isJoined ? (
+                {isCompleted ? (
+                  <Button size="sm" variant="outline" disabled className="h-8 gap-1 px-4 opacity-50">
+                    <Clock className="w-3.5 h-3.5" />
+                    Completed
+                  </Button>
+                ) : !isJoined ? (
                   <Button 
                     size="sm" 
                     onClick={() => handleJoinEvent(event.name)}

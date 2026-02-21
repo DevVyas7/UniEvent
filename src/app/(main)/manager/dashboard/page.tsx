@@ -38,7 +38,9 @@ import {
   CalendarDays, 
   GraduationCap, 
   TrendingUp,
-  Briefcase
+  Briefcase,
+  CheckCircle2,
+  XCircle
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -64,7 +66,7 @@ export default function OrganizerDashboardPage() {
   }, []);
 
   const totalParticipants = managerEvents.length * 12; 
-  const totalCreditsIssued = managerEvents.filter(e => e.isCredit).length * 1.0;
+  const totalCreditsIssued = managerEvents.filter(e => e.isCredit && e.status === 'completed').length * 1.0;
 
   const handleEditClick = (event: Event) => {
     setEditingEvent({ ...event });
@@ -87,6 +89,14 @@ export default function OrganizerDashboardPage() {
     toast({
       title: "Event Updated",
       description: `${editingEvent.name} has been successfully updated.`,
+    });
+  };
+
+  const handleStatusChange = (id: string, newStatus: Event['status']) => {
+    setManagerEvents(prev => prev.map(e => e.id === id ? { ...e, status: newStatus } : e));
+    toast({
+      title: "Status Updated",
+      description: `Event has been marked as ${newStatus}.`,
     });
   };
 
@@ -190,6 +200,7 @@ export default function OrganizerDashboardPage() {
               {managerEvents.map((event) => {
                 const eventDate = new Date(event.date);
                 const isUpcoming = eventDate > new Date();
+                
                 return (
                   <TableRow key={event.id} className="hover:bg-muted/10 transition-colors border-b last:border-none">
                     <TableCell className="py-4">
@@ -213,9 +224,15 @@ export default function OrganizerDashboardPage() {
                        </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={isUpcoming ? "default" : "secondary"} className={isUpcoming ? "bg-green-500 hover:bg-green-600 border-none" : "border-none"}>
-                        {isUpcoming ? "Active" : "Archived"}
-                      </Badge>
+                      {event.status === 'completed' ? (
+                        <Badge className="bg-blue-500 hover:bg-blue-600 border-none">Completed</Badge>
+                      ) : event.status === 'cancelled' ? (
+                        <Badge variant="destructive" className="border-none">Cancelled</Badge>
+                      ) : (
+                        <Badge variant={isUpcoming ? "default" : "secondary"} className={isUpcoming ? "bg-green-500 hover:bg-green-600 border-none" : "border-none"}>
+                          {isUpcoming ? "Active" : "Archived"}
+                        </Badge>
+                      )}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -233,6 +250,15 @@ export default function OrganizerDashboardPage() {
                             <UsersIcon className="h-4 w-4" />
                             Enrollment List
                           </DropdownMenuItem>
+                          {event.status !== 'completed' && (
+                            <DropdownMenuItem 
+                              onSelect={() => handleStatusChange(event.id, 'completed')} 
+                              className="gap-2 text-primary font-bold"
+                            >
+                              <CheckCircle2 className="h-4 w-4" />
+                              Mark as Completed
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem 
                             onSelect={() => handleEditClick(event)} 
                             className="gap-2"
@@ -244,6 +270,7 @@ export default function OrganizerDashboardPage() {
                             className="text-destructive focus:text-destructive focus:bg-destructive/10 gap-2"
                             onSelect={() => handleDeleteEvent(event.id)}
                           >
+                            <XCircle className="h-4 w-4" />
                             Cancel Event
                           </DropdownMenuItem>
                         </DropdownMenuContent>

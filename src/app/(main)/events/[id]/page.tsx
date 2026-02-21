@@ -1,11 +1,10 @@
-
 'use client';
 
 import React, { useEffect, useState, use } from "react";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2, Award } from "lucide-react";
+import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2, Award, Clock } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +52,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const isStudent = userRole === 'student' || !userRole;
   // Mock logic: events 4 and 5 are "joined" in our placeholder data slice used across the app
   const isJoined = id === '4' || id === '5';
+  const isCompleted = event.status === 'completed';
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -68,6 +68,12 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
               <Badge className="bg-accent text-accent-foreground border-none px-4 py-1">{event.department}</Badge>
+              {isCompleted && (
+                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 px-4 py-1">
+                  <Clock className="w-4 h-4 mr-2" />
+                  Completed
+                </Badge>
+              )}
               {event.isCredit ? (
                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 px-4 py-1">
                   <GraduationCap className="w-4 h-4 mr-2" />
@@ -149,6 +155,12 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                        <Button variant="outline" size="sm" className="w-full text-[10px] uppercase font-bold tracking-widest" asChild>
                           <Link href="/participations">View in Participations</Link>
                        </Button>
+                    </div>
+                  ) : isCompleted ? (
+                    <div className="bg-muted text-muted-foreground px-3 py-6 rounded-xl text-center border border-muted space-y-2">
+                       <Clock className="w-8 h-8 mx-auto opacity-50" />
+                       <p className="font-bold text-sm uppercase tracking-tight">Registration Closed</p>
+                       <p className="text-[10px] italic">This event has already concluded.</p>
                     </div>
                   ) : (
                     <>

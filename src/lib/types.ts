@@ -18,4 +18,5 @@ export type Event = {
   department: string;
   category: string;
   isCredit: boolean;
+  status?: 'upcoming' | 'completed' | 'cancelled';
 };
