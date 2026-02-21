@@ -58,23 +58,26 @@ export default function OrganizerDashboardPage() {
     const user = users.find(u => u.role === role) || users.find(u => u.role === 'organizer');
     if (user) {
       setCurrentUser(user);
-      // Filter events by the organizer's department for a realistic feel
       const deptEvents = events.filter(e => e.department === user.department);
       setManagerEvents(deptEvents.length > 0 ? deptEvents : events.filter(e => e.organizerId === '2'));
     }
   }, []);
 
-  const totalParticipants = managerEvents.length * 12; // Mock scaling logic for total joined students
+  const totalParticipants = managerEvents.length * 12; 
   const totalCreditsIssued = managerEvents.filter(e => e.isCredit).length * 1.0;
 
   const handleEditClick = (event: Event) => {
     setEditingEvent({ ...event });
-    setIsEditDialogOpen(true);
+    setTimeout(() => {
+      setIsEditDialogOpen(true);
+    }, 100);
   };
 
   const handleViewParticipants = (event: Event) => {
     setViewingParticipantsEvent(event);
-    setIsParticipantsDialogOpen(true);
+    setTimeout(() => {
+      setIsParticipantsDialogOpen(true);
+    }, 100);
   };
 
   const handleUpdateEvent = () => {
@@ -100,7 +103,6 @@ export default function OrganizerDashboardPage() {
 
   return (
     <div className="space-y-8 pb-10">
-      {/* Department Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-slate-900 px-8 py-10 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3">
@@ -125,7 +127,6 @@ export default function OrganizerDashboardPage() {
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
       </div>
 
-      {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="border-none shadow-md bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -161,7 +162,6 @@ export default function OrganizerDashboardPage() {
         </Card>
       </div>
 
-      {/* Event Management Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2">
           <div className="space-y-1">
@@ -227,20 +227,14 @@ export default function OrganizerDashboardPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
                           <DropdownMenuItem 
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              handleViewParticipants(event);
-                            }} 
+                            onSelect={() => handleViewParticipants(event)} 
                             className="gap-2"
                           >
                             <UsersIcon className="h-4 w-4" />
                             Enrollment List
                           </DropdownMenuItem>
                           <DropdownMenuItem 
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              handleEditClick(event);
-                            }} 
+                            onSelect={() => handleEditClick(event)} 
                             className="gap-2"
                           >
                             <CalendarDays className="h-4 w-4" />
@@ -248,7 +242,7 @@ export default function OrganizerDashboardPage() {
                           </DropdownMenuItem>
                           <DropdownMenuItem 
                             className="text-destructive focus:text-destructive focus:bg-destructive/10 gap-2"
-                            onClick={() => handleDeleteEvent(event.id)}
+                            onSelect={() => handleDeleteEvent(event.id)}
                           >
                             Cancel Event
                           </DropdownMenuItem>
@@ -270,7 +264,6 @@ export default function OrganizerDashboardPage() {
         </div>
       </div>
 
-      {/* Edit Event Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
@@ -280,7 +273,7 @@ export default function OrganizerDashboardPage() {
             </DialogDescription>
           </DialogHeader>
           {editingEvent && (
-            <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-2">
+            <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
               <div className="grid gap-2">
                 <Label htmlFor="name">Event Title</Label>
                 <Input
@@ -338,7 +331,6 @@ export default function OrganizerDashboardPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Participants Enrollment Dialog */}
       <Dialog open={isParticipantsDialogOpen} onOpenChange={setIsParticipantsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
