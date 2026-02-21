@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { events } from "@/lib/placeholder-data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,15 +9,20 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Award, Calendar as CalendarIcon, MapPin, ArrowLeft, GraduationCap } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function ParticipationsPage() {
+  const router = useRouter();
   const [userName, setUserName] = useState<string>("Student");
   
   useEffect(() => {
+    const role = localStorage.getItem('userRole');
+    if (role === 'organizer') {
+      router.push('/manager/dashboard');
+      return;
+    }
     // For demo purposes, we'll assume the student is Alice Smith
     setUserName("Alice Smith");
-  }, []);
+  }, [router]);
 
   const myJoinedEvents = events.slice(3, 5);
 

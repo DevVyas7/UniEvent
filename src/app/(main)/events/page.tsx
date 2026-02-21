@@ -1,6 +1,7 @@
-
 'use client';
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +12,16 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
 export default function EventsPage() {
+  const router = useRouter();
   const { toast } = useToast();
+  
+  useEffect(() => {
+    const role = localStorage.getItem('userRole');
+    if (role === 'organizer') {
+      router.push('/manager/dashboard');
+    }
+  }, [router]);
+
   // Mock joined events are IDs 4 and 5
   const joinedEventIds = ['4', '5'];
 

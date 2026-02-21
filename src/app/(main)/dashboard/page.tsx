@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,11 +22,23 @@ import { events, users } from "@/lib/placeholder-data";
 import type { User, Event } from "@/lib/types";
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const role = localStorage.getItem('userRole') || 'student';
+    
+    // Redirect Organizers away from the Student Portal
+    if (role === 'organizer') {
+      router.push('/manager/dashboard');
+      return;
+    }
+    if (role === 'admin') {
+      router.push('/admin/dashboard');
+      return;
+    }
+
     const foundUser = users.find(u => u.role === role) || users.find(u => u.role === 'student');
     if (foundUser) {
       setCurrentUser(foundUser);
@@ -33,7 +46,7 @@ export default function DashboardPage() {
       const mockJoined = events.filter(e => e.id === '4' || e.id === '5');
       setJoinedEvents(mockJoined);
     }
-  }, []);
+  }, [router]);
 
   if (!currentUser) return null;
 
@@ -41,12 +54,11 @@ export default function DashboardPage() {
   const upcomingEventsCount = events.length - totalParticipated;
   const earnedCredits = joinedEvents.reduce((acc, curr) => acc + (curr.isCredit ? 1.0 : 0), 0);
   
-  // Logic for new features
   const creditGoal = 5.0;
   const progressPercent = Math.min((earnedCredits / creditGoal) * 100, 100);
   
   const recommendedEvents = events
-    .filter(e => e.department === currentUser.department && !joinedEvents.some(je => je.id === e.id))
+    .filter(e => e.department === currentUser.department && !joinedEvents.some(je => je.id === je.id))
     .slice(0, 2);
 
   return (
