@@ -5,12 +5,10 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function SettingsPage() {
-  const { toast } = useToast();
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('light');
 
   useEffect(() => {
@@ -36,13 +34,6 @@ export default function SettingsPage() {
     setTheme(value);
     localStorage.setItem('theme', value);
     applyTheme(value);
-  };
-
-  const handleSave = () => {
-    toast({
-      title: "Settings Saved",
-      description: "Your preferences have been updated successfully.",
-    });
   };
 
   return (
@@ -103,11 +94,6 @@ export default function SettingsPage() {
           </div>
         </CardContent>
       </Card>
-
-      <div className="flex justify-end gap-4">
-        <Button variant="outline" className="h-11 px-6">Reset Defaults</Button>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 font-bold" onClick={handleSave}>Save Preferences</Button>
-      </div>
     </div>
   );
 }
