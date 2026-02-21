@@ -38,7 +38,8 @@ import {
   CalendarDays, 
   GraduationCap, 
   TrendingUp,
-  Briefcase
+  Briefcase,
+  ArrowLeft
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -64,8 +65,8 @@ export default function OrganizerDashboardPage() {
     }
   }, []);
 
-  const totalParticipants = managerEvents.length * 12; // Mock scaling logic
-  const totalCreditsGiven = managerEvents.filter(e => e.isCredit).length * 1.0;
+  const totalParticipants = managerEvents.length * 12; // Mock scaling logic for total joined students
+  const totalCreditsIssued = managerEvents.filter(e => e.isCredit).length * 1.0;
 
   const handleEditClick = (event: Event) => {
     setEditingEvent({ ...event });
@@ -100,19 +101,26 @@ export default function OrganizerDashboardPage() {
 
   return (
     <div className="space-y-8 pb-10">
+      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
+        <Link href="/dashboard">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Student Portal
+        </Link>
+      </Button>
+
       {/* Department Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-slate-900 px-8 py-10 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
               <Briefcase className="h-3.5 w-3.5 text-accent" />
-              <span>Departmental Management</span>
+              <span>Department Head Portal</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-              {currentUser.department} <span className="text-accent">Portal</span>
+              {currentUser.department} <span className="text-accent">Management</span>
             </h1>
             <p className="max-w-xl text-sm opacity-80">
-              Coordinating academic engagement and campus life for the {currentUser.department} department.
+              Overseeing student engagement, event planning, and academic credit verification for the department.
             </p>
           </div>
           <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-bold shadow-lg">
@@ -129,34 +137,34 @@ export default function OrganizerDashboardPage() {
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="border-none shadow-md bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Total Events</CardTitle>
+            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Departmental Events</CardTitle>
             <CalendarDays className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-black">{managerEvents.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Organized this academic year</p>
+            <p className="text-xs text-muted-foreground mt-1">Live and upcoming activities</p>
           </CardContent>
         </Card>
 
         <Card className="border-none shadow-md bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Active Students</CardTitle>
+            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Total Students Joined</CardTitle>
             <UsersIcon className="h-5 w-5 text-accent" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-black">+{totalParticipants}</div>
-            <p className="text-xs text-muted-foreground mt-1">Total combined participations</p>
+            <p className="text-xs text-muted-foreground mt-1">Cumulative student participation</p>
           </CardContent>
         </Card>
 
         <Card className="border-none shadow-md bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Credits Awarded</CardTitle>
+            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Student Credits Issued</CardTitle>
             <GraduationCap className="h-5 w-5 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black">{totalCreditsGiven.toFixed(1)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Verified academic credits issued</p>
+            <div className="text-3xl font-black">{totalCreditsIssued.toFixed(1)}</div>
+            <p className="text-xs text-muted-foreground mt-1">Academic credits verified to date</p>
           </CardContent>
         </Card>
       </div>
@@ -165,12 +173,12 @@ export default function OrganizerDashboardPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2">
           <div className="space-y-1">
-            <h2 className="text-2xl font-bold tracking-tight">Event Catalog</h2>
-            <p className="text-sm text-muted-foreground">Manage and track your department's live activities.</p>
+            <h2 className="text-2xl font-bold tracking-tight">Active Event Catalog</h2>
+            <p className="text-sm text-muted-foreground">Manage activities and view real-time student enrollment progress.</p>
           </div>
           <div className="flex items-center gap-2">
              <TrendingUp className="h-4 w-4 text-green-500" />
-             <span className="text-xs font-bold text-green-600 uppercase tracking-tighter">+12% growth in attendance</span>
+             <span className="text-xs font-bold text-green-600 uppercase tracking-tighter">Engagement +12% this month</span>
           </div>
         </div>
 
@@ -195,7 +203,7 @@ export default function OrganizerDashboardPage() {
                     <TableCell className="py-4">
                       <div className="grid gap-1">
                         <span className="font-bold text-sm leading-none">{event.name}</span>
-                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">{event.category}</span>
+                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">{event.category} • {event.isCredit ? 'Credit' : 'Non-Credit'}</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -209,12 +217,12 @@ export default function OrganizerDashboardPage() {
                     </TableCell>
                     <TableCell className="text-center">
                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[10px]">
-                        ~12 Joined
+                        12 Joined
                        </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge variant={isUpcoming ? "default" : "secondary"} className={isUpcoming ? "bg-green-500 hover:bg-green-600 border-none" : "border-none"}>
-                        {isUpcoming ? "Live" : "Past"}
+                        {isUpcoming ? "Active" : "Archived"}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -228,7 +236,7 @@ export default function OrganizerDashboardPage() {
                         <DropdownMenuContent align="end" className="w-48">
                           <DropdownMenuItem onClick={() => handleViewParticipants(event)} className="gap-2">
                             <UsersIcon className="h-4 w-4" />
-                            Participants List
+                            Enrollment List
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleEditClick(event)} className="gap-2">
                             <CalendarDays className="h-4 w-4" />
@@ -249,7 +257,7 @@ export default function OrganizerDashboardPage() {
               {managerEvents.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-20 text-muted-foreground italic">
-                    No departmental events found. Start by creating your first workshop!
+                    No departmental events found. Start by creating a new activity for your students.
                   </TableCell>
                 </TableRow>
               )}
@@ -258,7 +266,7 @@ export default function OrganizerDashboardPage() {
         </div>
       </div>
 
-      {/* Dialogs remain functional and consistent */}
+      {/* Edit Event Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
@@ -321,17 +329,18 @@ export default function OrganizerDashboardPage() {
           )}
           <DialogFooter className="border-t pt-4">
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleUpdateEvent} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Save Updates</Button>
+            <Button onClick={handleUpdateEvent} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Save Changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
+      {/* Participants Enrollment Dialog */}
       <Dialog open={isParticipantsDialogOpen} onOpenChange={setIsParticipantsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Student Enrollment List</DialogTitle>
+            <DialogTitle>Student Enrollment Progress</DialogTitle>
             <DialogDescription>
-              Students currently joined for: <span className="font-bold text-primary">{viewingParticipantsEvent?.name}</span>
+              Viewing students enrolled in: <span className="font-bold text-primary">{viewingParticipantsEvent?.name}</span>
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
@@ -340,8 +349,8 @@ export default function OrganizerDashboardPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Student Name</TableHead>
-                    <TableHead>ID Number</TableHead>
-                    <TableHead>Department</TableHead>
+                    <TableHead>Student ID</TableHead>
+                    <TableHead>Home Department</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -359,7 +368,7 @@ export default function OrganizerDashboardPage() {
             </div>
           </div>
           <DialogFooter className="border-t pt-4">
-            <Button onClick={() => setIsParticipantsDialogOpen(false)} className="rounded-full px-8">Close Overview</Button>
+            <Button onClick={() => setIsParticipantsDialogOpen(false)} className="rounded-full px-8">Close Enrollment View</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
