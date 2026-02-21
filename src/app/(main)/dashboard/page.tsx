@@ -208,7 +208,7 @@ export default function DashboardPage() {
                 <CardContent className="flex justify-end">
                   <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                 </CardContent>
-              </Link>
+              </Card>
             </Link>
           </div>
 
