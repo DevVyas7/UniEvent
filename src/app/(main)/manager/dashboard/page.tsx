@@ -226,11 +226,23 @@ export default function OrganizerDashboardPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem onClick={() => handleViewParticipants(event)} className="gap-2">
+                          <DropdownMenuItem 
+                            onSelect={(e) => {
+                              e.preventDefault();
+                              handleViewParticipants(event);
+                            }} 
+                            className="gap-2"
+                          >
                             <UsersIcon className="h-4 w-4" />
                             Enrollment List
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleEditClick(event)} className="gap-2">
+                          <DropdownMenuItem 
+                            onSelect={(e) => {
+                              e.preventDefault();
+                              handleEditClick(event);
+                            }} 
+                            className="gap-2"
+                          >
                             <CalendarDays className="h-4 w-4" />
                             Edit Details
                           </DropdownMenuItem>
