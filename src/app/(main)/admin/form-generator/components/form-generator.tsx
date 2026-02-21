@@ -1,12 +1,12 @@
 'use client';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { handleGenerateForm, type FormState } from '../actions';
-import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Bot, Loader2 } from 'lucide-react';
 import { DynamicForm } from './dynamic-form';
@@ -36,7 +36,7 @@ function SubmitButton() {
 }
 
 export function FormGenerator() {
-  const [state, formAction] = useFormState(handleGenerateForm, initialState);
+  const [state, formAction] = useActionState(handleGenerateForm, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
