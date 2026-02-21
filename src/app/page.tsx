@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { GraduationCap, Users, Bot, CalendarDays } from 'lucide-react';
+import { GraduationCap, CalendarDays } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -41,7 +41,7 @@ export default function Home() {
               <h3 className="text-3xl font-bold">Empowering University Life</h3>
               <p className="text-muted-foreground mt-2">Designed for departments to engage students effectively.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               <Card className="text-center border-none shadow-md">
                 <CardHeader>
                   <div className="mx-auto bg-primary/10 rounded-full p-3 w-fit">
@@ -62,28 +62,6 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">Coordinators can manage departmental events and participant lists effortlessly.</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center border-none shadow-md">
-                <CardHeader>
-                  <div className="mx-auto bg-primary/10 rounded-full p-3 w-fit">
-                    <Users className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="mt-4">Free Participation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Promoting zero-cost participation to encourage widespread student engagement.</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center border-none shadow-md">
-                <CardHeader>
-                  <div className="mx-auto bg-primary/10 rounded-full p-3 w-fit">
-                    <Bot className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="mt-4">AI Assistance</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Use AI to generate compelling event posters, descriptions, and registration forms.</p>
                 </CardContent>
               </Card>
             </div>
