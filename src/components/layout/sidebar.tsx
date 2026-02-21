@@ -28,15 +28,15 @@ interface AppSidebarProps {
 }
 
 const menuItems = [
-  { href: '/dashboard', label: 'Student Portal', icon: LayoutDashboard, roles: ['student', 'admin'] },
-  { href: '/events', label: 'Campus Events', icon: GraduationCap, roles: ['student', 'admin'] },
+  { href: '/dashboard', label: 'Student Portal', icon: LayoutDashboard, roles: ['student'] },
+  { href: '/events', label: 'Campus Events', icon: GraduationCap, roles: ['student'] },
   { href: '/participations', label: 'My Participations', icon: Award, roles: ['student'] },
 ];
 
 const organizerMenuItems = [
-    { href: '/manager/dashboard', label: 'My Department', icon: Briefcase, roles: ['organizer', 'admin'] },
-    { href: '/manager/roster', label: 'Student Roster', icon: UsersRound, roles: ['organizer', 'admin'] },
-    { href: '/manager/student-credits', label: 'Credit Rankings', icon: FileBadge2, roles: ['organizer', 'admin'] },
+    { href: '/manager/dashboard', label: 'My Department', icon: Briefcase, roles: ['organizer'] },
+    { href: '/manager/roster', label: 'Student Roster', icon: UsersRound, roles: ['organizer'] },
+    { href: '/manager/student-credits', label: 'Credit Rankings', icon: FileBadge2, roles: ['organizer'] },
 ];
 
 const adminMenuItems = [
@@ -53,8 +53,8 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
 
   const allMenuItems = [
     ...menuItems,
-    ...(isOrganizer || isAdmin ? organizerMenuItems : []),
-    ...(isAdmin ? adminMenuItems : []),
+    ...organizerMenuItems,
+    ...adminMenuItems,
   ];
 
   return (
