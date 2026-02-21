@@ -27,8 +27,8 @@ interface AppSidebarProps {
 }
 
 const menuItems = [
-  { href: '/dashboard', label: 'Student Portal', icon: LayoutDashboard, roles: ['student', 'organizer', 'admin'] },
-  { href: '/events', label: 'Campus Events', icon: GraduationCap, roles: ['student', 'organizer', 'admin'] },
+  { href: '/dashboard', label: 'Student Portal', icon: LayoutDashboard, roles: ['student', 'admin'] },
+  { href: '/events', label: 'Campus Events', icon: GraduationCap, roles: ['student', 'admin'] },
   { href: '/participations', label: 'My Participations', icon: Award, roles: ['student'] },
 ];
 
@@ -58,7 +58,7 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
   return (
     <Sidebar className="border-r" collapsible="offcanvas">
       <SidebarHeader className="p-4">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href={isOrganizer ? "/manager/dashboard" : isAdmin ? "/admin/dashboard" : "/dashboard"} className="flex items-center gap-2">
           <GraduationCap className="w-8 h-8 text-primary" />
           <div className="flex flex-col">
             <h1 className="text-xl font-bold text-sidebar-foreground">UniEvent</h1>

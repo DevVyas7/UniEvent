@@ -38,8 +38,7 @@ import {
   CalendarDays, 
   GraduationCap, 
   TrendingUp,
-  Briefcase,
-  ArrowLeft
+  Briefcase
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -101,13 +100,6 @@ export default function OrganizerDashboardPage() {
 
   return (
     <div className="space-y-8 pb-10">
-      <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:bg-transparent hover:text-primary">
-        <Link href="/dashboard">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Student Portal
-        </Link>
-      </Button>
-
       {/* Department Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-slate-900 px-8 py-10 text-white shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
