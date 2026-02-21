@@ -44,7 +44,7 @@ export default function Home() {
               </Badge>
               <h2 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl text-white">
                 One Portal. <br />
-                <span className="text-primary-foreground/80">Every Campus Event.</span>
+                <span className="text-slate-400">Every Campus Event.</span>
               </h2>
               <p className="text-lg md:text-xl text-slate-300 max-w-xl leading-relaxed">
                 The unified platform for university departments to host festivals, workshops, and seminars. Empowering students with a single click to their next big achievement.
@@ -100,7 +100,7 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {highlightEvents.map((event) => (
-                <Card key={event.id} className="group border-none shadow-xl hover:shadow-2xl transition-all bg-card flex flex-col">
+                <Card key={event.id} className="group border-none shadow-xl hover:shadow-2xl transition-all overflow-hidden bg-card">
                   <CardHeader>
                     <div className="mb-3">
                        <Badge variant="secondary" className="bg-primary/10 text-primary border-none">
@@ -113,8 +113,8 @@ export default function Home() {
                       {new Date(event.date).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-1">
-                    <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                       {event.description}
                     </p>
                     <Button variant="link" className="px-0 mt-4 h-auto text-accent" asChild>
