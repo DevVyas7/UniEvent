@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -21,6 +22,7 @@ import {
   Award,
   UsersRound,
   FileBadge2,
+  Globe,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -41,6 +43,7 @@ const organizerMenuItems = [
 
 const adminMenuItems = [
   { href: '/admin/dashboard', label: 'System Admin', icon: Shield, roles: ['admin'] },
+  { href: '/admin/events', label: 'Global Events', icon: Globe, roles: ['admin'] },
   { href: '/admin/users', label: 'User Directory', icon: Users, roles: ['admin'] },
 ];
 
