@@ -66,7 +66,10 @@ export default function OrganizerDashboardPage() {
   }, []);
 
   const totalParticipants = managerEvents.length * 12; 
-  const totalCreditsIssued = managerEvents.filter(e => e.isCredit && e.status === 'completed').length * 1.0;
+  const upcomingEventsCount = managerEvents.filter(e => {
+    const eventDate = new Date(e.date);
+    return eventDate > new Date() && e.status !== 'completed';
+  }).length;
 
   const handleEditClick = (event: Event) => {
     setEditingEvent({ ...event });
@@ -140,12 +143,12 @@ export default function OrganizerDashboardPage() {
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="border-none shadow-md bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Departmental Events</CardTitle>
+            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Upcoming Events</CardTitle>
             <CalendarDays className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black">{managerEvents.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Live and upcoming activities</p>
+            <div className="text-3xl font-black">{upcomingEventsCount}</div>
+            <p className="text-xs text-muted-foreground mt-1">Live activities scheduled</p>
           </CardContent>
         </Card>
 
@@ -162,12 +165,12 @@ export default function OrganizerDashboardPage() {
 
         <Card className="border-none shadow-md bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Student Credits Issued</CardTitle>
-            <GraduationCap className="h-5 w-5 text-green-500" />
+            <CardTitle className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Total Events Hosted</CardTitle>
+            <CheckCircle2 className="h-5 w-5 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black">{totalCreditsIssued.toFixed(1)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Academic credits verified to date</p>
+            <div className="text-3xl font-black">{managerEvents.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">Total activities created</p>
           </CardContent>
         </Card>
       </div>
