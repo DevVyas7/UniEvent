@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState, use } from "react";
@@ -8,9 +9,11 @@ import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building
 import Link from "next/link";
 import type { Event } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { toast } = useToast();
   const [userRole, setUserRole] = useState<'student' | 'organizer' | 'admin' | null>(null);
   const [event, setEvent] = useState<Event | null | undefined>(undefined);
 
@@ -32,6 +35,13 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   if (!event) {
     notFound();
   }
+
+  const handleJoin = () => {
+    toast({
+      title: "Successfully Joined",
+      description: `You have joined ${event.name}. See you there!`,
+    });
+  };
 
   const eventDate = new Date(event.date).toLocaleDateString('en-US', {
     weekday: 'long',
@@ -142,7 +152,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                     </div>
                   ) : (
                     <>
-                      <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 h-12 text-lg">
+                      <Button onClick={handleJoin} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 h-12 text-lg font-bold shadow-lg">
                         <GraduationCap className="h-5 w-5" />
                         Join Event
                       </Button>

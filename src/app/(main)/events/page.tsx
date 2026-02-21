@@ -1,14 +1,26 @@
+
+'use client';
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { events } from "@/lib/placeholder-data";
-import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap, ArrowLeft } from "lucide-react";
+import { Search, MapPin, Calendar as CalendarIcon, CheckCircle2, GraduationCap, ArrowLeft, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 export default function EventsPage() {
+  const { toast } = useToast();
   // Mock joined events are IDs 4 and 5
   const joinedEventIds = ['4', '5'];
+
+  const handleJoinEvent = (eventName: string) => {
+    toast({
+      title: "Participation Confirmed!",
+      description: `You have successfully joined ${eventName}. It has been added to your academic record.`,
+    });
+  };
 
   return (
     <div className="space-y-8">
@@ -69,10 +81,25 @@ export default function EventsPage() {
                   <p className="line-clamp-2">{event.location}</p>
                 </div>
               </CardContent>
-              <CardFooter className="pt-0 flex justify-end items-center">
-                <Button asChild size="sm" variant={isJoined ? "outline" : "secondary"} className="h-8">
-                  <Link href={`/events/${event.id}`}>Details</Link>
+              <CardFooter className="pt-2 flex justify-between items-center gap-2 border-t mt-auto">
+                <Button asChild size="sm" variant="ghost" className="h-8 text-xs underline-offset-4 hover:underline">
+                  <Link href={`/events/${event.id}`}>View Details</Link>
                 </Button>
+                {!isJoined ? (
+                  <Button 
+                    size="sm" 
+                    onClick={() => handleJoinEvent(event.name)}
+                    className="h-8 bg-accent text-accent-foreground hover:bg-accent/90 gap-1 px-4"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Join Event
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" disabled className="h-8 gap-1 px-4 opacity-50">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Joined
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           );
