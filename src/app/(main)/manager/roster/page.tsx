@@ -35,14 +35,18 @@ export default function StudentRosterPage() {
 
     // Create a flat list where each entry is a Student + Event pair
     return deptEvents.flatMap(event => {
-      // Deterministically pick 2-3 students for each event for demo consistency
+      // Deterministically pick 2-3 unique students for each event for demo consistency
       const eventIdNum = parseInt(event.id);
-      const studentCount = (eventIdNum % 2) + 2; 
+      // Ensure we don't pick more students than exist in our placeholder data
+      const studentCount = Math.min((eventIdNum % 2) + 1, students.length); 
       const startIdx = eventIdNum % students.length;
       
       const participants = [];
       for (let i = 0; i < studentCount; i++) {
-        const student = students[(startIdx + i) % students.length];
+        // Use an offset to pick different students but keep it deterministic
+        const studentIndex = (startIdx + i) % students.length;
+        const student = students[studentIndex];
+        
         participants.push({
           ...student,
           eventName: event.name,
@@ -52,7 +56,7 @@ export default function StudentRosterPage() {
       }
       return participants;
     });
-  }, [department]);
+  }, [department, department]);
 
   const filteredRoster = rosterData.filter(p => 
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
