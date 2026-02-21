@@ -22,6 +22,7 @@ import {
   Award,
   BarChart3,
   UsersRound,
+  FileBadge2,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -37,6 +38,7 @@ const menuItems = [
 const organizerMenuItems = [
     { href: '/manager/dashboard', label: 'My Department', icon: Briefcase, roles: ['organizer', 'admin'] },
     { href: '/manager/roster', label: 'Student Roster', icon: UsersRound, roles: ['organizer', 'admin'] },
+    { href: '/manager/student-credits', label: 'Credit Rankings', icon: FileBadge2, roles: ['organizer', 'admin'] },
     { href: '/manager/analytics', label: 'Analytics', icon: BarChart3, roles: ['organizer', 'admin'] },
 ];
 
