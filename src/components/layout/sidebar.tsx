@@ -16,7 +16,6 @@ import {
   LayoutDashboard,
   GraduationCap,
   Users,
-  Bot,
   Shield,
   Briefcase,
   Award,
@@ -43,7 +42,6 @@ const organizerMenuItems = [
 const adminMenuItems = [
   { href: '/admin/dashboard', label: 'System Admin', icon: Shield, roles: ['admin'] },
   { href: '/admin/users', label: 'User Directory', icon: Users, roles: ['admin'] },
-  { href: '/admin/form-generator', label: 'Smart Forms', icon: Bot, roles: ['admin'] },
 ];
 
 export function AppSidebar({ userRole }: AppSidebarProps) {
