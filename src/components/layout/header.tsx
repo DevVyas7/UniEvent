@@ -12,6 +12,12 @@ export function Header({ user }: { user: User }) {
   const isMobile = useIsMobile();
   const { toggleSidebar } = useSidebar();
 
+  const getDashboardHref = () => {
+    if (user.role === 'admin') return '/admin/dashboard';
+    if (user.role === 'organizer') return '/manager/dashboard';
+    return '/dashboard';
+  };
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-card px-4 sm:px-6 shadow-sm">
       <Button variant="ghost" size="icon" onClick={toggleSidebar} className="hover:bg-accent">
@@ -20,7 +26,7 @@ export function Header({ user }: { user: User }) {
       </Button>
 
       <div className="flex flex-1 items-center gap-4">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href={getDashboardHref()} className="flex items-center gap-2">
           <GraduationCap className="w-6 h-6 text-primary" />
           {!isMobile && <span className="font-bold text-xl tracking-tight">UniEvent</span>}
         </Link>
