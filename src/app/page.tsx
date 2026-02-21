@@ -1,18 +1,15 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { GraduationCap, CalendarDays, Users, Building2, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { events, users } from '@/lib/placeholder-data';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
   const totalEvents = events.length;
   const totalDepartments = Array.from(new Set(events.map(e => e.department))).length;
   const totalStudents = users.filter(u => u.role === 'student').length;
   
-  const heroImage = PlaceHolderImages.find(img => img.id === 'hero');
   const highlightEvents = events.slice(0, 3);
 
   return (
@@ -39,19 +36,6 @@ export default function Home() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative w-full py-20 lg:py-32 overflow-hidden bg-slate-950">
-          {heroImage && (
-            <div className="absolute inset-0 z-0 opacity-40">
-               <Image 
-                src={heroImage.imageUrl} 
-                alt={heroImage.description} 
-                fill 
-                className="object-cover"
-                priority
-                data-ai-hint={heroImage.imageHint}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
-            </div>
-          )}
           <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl space-y-8">
               <Badge variant="outline" className="text-accent border-accent/30 bg-accent/10 px-4 py-1.5 text-sm animate-pulse">
@@ -75,6 +59,8 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <div className="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
+          <div className="absolute -left-20 -bottom-20 h-96 w-96 rounded-full bg-accent/5 blur-[120px]" />
         </section>
 
         {/* University Stats Bar */}
@@ -113,30 +99,22 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {highlightEvents.map((event, i) => (
-                <Card key={event.id} className="group border-none shadow-xl hover:shadow-2xl transition-all overflow-hidden bg-card">
-                  <div className="relative h-48 w-full bg-slate-200">
-                    <Image 
-                      src={PlaceHolderImages[i % PlaceHolderImages.length].imageUrl}
-                      alt={event.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-4 left-4">
-                       <Badge className="bg-primary/90 backdrop-blur-sm border-none shadow-lg">
+              {highlightEvents.map((event) => (
+                <Card key={event.id} className="group border-none shadow-xl hover:shadow-2xl transition-all bg-card flex flex-col">
+                  <CardHeader>
+                    <div className="mb-3">
+                       <Badge variant="secondary" className="bg-primary/10 text-primary border-none">
                         {event.department}
                        </Badge>
                     </div>
-                  </div>
-                  <CardHeader>
                     <CardTitle className="line-clamp-1">{event.name}</CardTitle>
                     <CardDescription className="flex items-center gap-2 text-xs font-medium uppercase tracking-tighter mt-1">
                       <CalendarDays className="w-3.5 h-3.5 text-primary" />
                       {new Date(event.date).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                  <CardContent className="flex-1">
+                    <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
                       {event.description}
                     </p>
                     <Button variant="link" className="px-0 mt-4 h-auto text-accent" asChild>
