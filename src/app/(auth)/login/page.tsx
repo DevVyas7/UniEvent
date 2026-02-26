@@ -94,7 +94,7 @@ export default function LoginPage() {
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
+        <CardFooter>
           <Button 
             type="submit" 
             className="w-full bg-primary hover:bg-primary/90 h-12 text-lg shadow-lg font-bold"
@@ -102,12 +102,6 @@ export default function LoginPage() {
           >
             {isLoading ? "Authenticating..." : "Sign In"}
           </Button>
-          <div className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-primary font-semibold hover:underline">
-              Contact Registrar
-            </Link>
-          </div>
         </CardFooter>
       </form>
     </Card>
