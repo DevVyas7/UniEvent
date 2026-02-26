@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { users } from '@/lib/placeholder-data';
 import { useToast } from '@/hooks/use-toast';
-import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -79,10 +78,7 @@ export default function LoginPage() {
             />
           </div>
           <div className="grid gap-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link href="#" className="text-xs text-primary hover:underline">Forgot password?</Link>
-            </div>
+            <Label htmlFor="password">Password</Label>
             <Input 
               id="password" 
               type="password" 
