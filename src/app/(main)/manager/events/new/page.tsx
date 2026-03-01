@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Loader2, Sparkles, GraduationCap, ArrowLeft } from "lucide-react";
+import { Loader2, Sparkles, GraduationCap, ArrowLeft, Users, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateEventDescription } from "@/ai/flows/generate-event-description";
 import Link from 'next/link';
@@ -27,6 +27,7 @@ export default function NewDepartmentEventPage() {
     department: '',
     category: '',
     isCredit: false,
+    participationType: 'individual' as 'individual' | 'team',
   });
 
   const handleAiGenerateDescription = async () => {
@@ -48,7 +49,7 @@ export default function NewDepartmentEventPage() {
         eventLocation: formData.location || "TBD",
         eventType: formData.category || "University Event",
         targetAudience: "University Students",
-        keyFeatures: formData.isCredit ? "Academic growth, Networking, Knowledge sharing, ECTS Credits" : "Academic growth, Networking, Knowledge sharing",
+        keyFeatures: `${formData.isCredit ? "Academic growth, Networking, Knowledge sharing, ECTS Credits" : "Academic growth, Networking, Knowledge sharing"}, ${formData.participationType === 'team' ? 'Team-based challenge' : 'Individual participation'}`,
         additionalNotes: `Organized by the ${formData.department || 'Academic'} department. ${formData.isCredit ? 'This is a credit-bearing event.' : ''}`
       });
       setFormData(prev => ({ ...prev, description: result.description }));
@@ -70,7 +71,7 @@ export default function NewDepartmentEventPage() {
   const handlePublish = () => {
     toast({
       title: "Event Published!",
-      description: "Your departmental event is now live for all students.",
+      description: `Your ${formData.participationType} departmental event is now live for all students.`,
     });
     router.push('/manager/dashboard');
   };
@@ -90,7 +91,7 @@ export default function NewDepartmentEventPage() {
                     <GraduationCap className="w-6 h-6 text-primary" />
                     <CardTitle>Create Departmental Event</CardTitle>
                 </div>
-                <CardDescription>All university events are free for participants. Fill in the details to invite students.</CardDescription>
+                <CardDescription>Fill in the details to invite students to your next activity.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -123,6 +124,51 @@ export default function NewDepartmentEventPage() {
                           )}
                         </Label>
                       </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="participationType">Participation Type</Label>
+                    <Select 
+                      defaultValue={formData.participationType} 
+                      onValueChange={(v: 'individual' | 'team') => setFormData({ ...formData, participationType: v })}
+                    >
+                      <SelectTrigger id="participationType" className="h-11">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="individual">
+                          <div className="flex items-center gap-2">
+                            <User className="h-4 w-4 text-primary" />
+                            <span>Individual Event</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="team">
+                          <div className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-primary" />
+                            <span>Team Event</span>
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="category">Category</Label>
+                    <Select onValueChange={(v) => setFormData({ ...formData, category: v })}>
+                        <SelectTrigger id="category" className="h-11">
+                            <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Tech">Technical</SelectItem>
+                            <SelectItem value="Workshop">Workshop</SelectItem>
+                            <SelectItem value="Seminar">Seminar</SelectItem>
+                            <SelectItem value="Cultural">Cultural</SelectItem>
+                            <SelectItem value="Sports">Sports</SelectItem>
+                            <SelectItem value="Social">Social Event</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
@@ -192,25 +238,6 @@ export default function NewDepartmentEventPage() {
                           onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                           className="h-11"
                         />
-                    </div>
-                </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                        <Label htmlFor="category">Category</Label>
-                        <Select onValueChange={(v) => setFormData({ ...formData, category: v })}>
-                            <SelectTrigger id="category" className="h-11">
-                                <SelectValue placeholder="Select type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Tech">Technical</SelectItem>
-                                <SelectItem value="Workshop">Workshop</SelectItem>
-                                <SelectItem value="Seminar">Seminar</SelectItem>
-                                <SelectItem value="Cultural">Cultural</SelectItem>
-                                <SelectItem value="Sports">Sports</SelectItem>
-                                <SelectItem value="Social">Social Event</SelectItem>
-                                <SelectItem value="Other">Other</SelectItem>
-                            </SelectContent>
-                        </Select>
                     </div>
                 </div>
                  <div className="flex justify-end gap-4 border-t pt-6">
