@@ -56,6 +56,7 @@ export const events: Event[] = [
     category: 'Tech',
     isCredit: true,
     status: 'upcoming',
+    participationType: 'team',
   },
   {
     id: '2',
@@ -69,6 +70,7 @@ export const events: Event[] = [
     category: 'Debate',
     isCredit: false,
     status: 'upcoming',
+    participationType: 'team',
   },
   {
     id: '3',
@@ -82,6 +84,7 @@ export const events: Event[] = [
     category: 'Workshop',
     isCredit: true,
     status: 'upcoming',
+    participationType: 'individual',
   },
   {
     id: '4',
@@ -95,6 +98,7 @@ export const events: Event[] = [
     category: 'Social',
     isCredit: false,
     status: 'upcoming',
+    participationType: 'individual',
   },
   {
     id: '5',
@@ -108,5 +112,6 @@ export const events: Event[] = [
     category: 'Sports',
     isCredit: false,
     status: 'upcoming',
+    participationType: 'team',
   },
 ];

@@ -19,4 +19,5 @@ export type Event = {
   category: string;
   isCredit: boolean;
   status?: 'upcoming' | 'completed' | 'cancelled';
+  participationType: 'individual' | 'team';
 };
