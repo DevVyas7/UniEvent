@@ -4,7 +4,7 @@ import React, { useEffect, useState, use } from "react";
 import { events } from "@/lib/placeholder-data";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2, Award, Clock, Users, Plus, Trash2, UserPlus } from "lucide-react";
+import { CalendarIcon, ClockIcon, MapPinIcon, GraduationCap, ArrowLeft, Building2, CheckCircle2, Award, Clock, Users, Plus, Trash2, UserPlus, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +25,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const [userRole, setUserRole] = useState<'student' | 'organizer' | 'admin' | null>(null);
   const [event, setEvent] = useState<Event | null | undefined>(undefined);
   const [isTeamDialogOpen, setIsTeamDialogOpen] = useState(false);
+  const [teamName, setTeamName] = useState('');
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [newMember, setNewMember] = useState<TeamMember>({ name: '', rollNumber: '', department: '' });
 
@@ -51,16 +52,29 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   const handleJoin = () => {
-    if (event.participationType === 'team' && teamMembers.length === 0) {
-      setIsTeamDialogOpen(true);
-      return;
+    if (event.participationType === 'team') {
+      if (!teamName) {
+        toast({
+          title: "Missing Team Name",
+          description: "Please provide a name for your team.",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (teamMembers.length === 0) {
+        setIsTeamDialogOpen(true);
+        return;
+      }
     }
 
     toast({
-      title: event.participationType === 'team' ? "Team Registration Confirmed" : "Successfully Joined",
+      title: event.participationType === 'team' ? `Registration Confirmed: ${teamName}` : "Successfully Joined",
       description: `You ${event.participationType === 'team' ? 'and your team' : ''} have joined ${event.name}. See you there!`,
     });
     setIsTeamDialogOpen(false);
+    // Reset form
+    setTeamName('');
+    setTeamMembers([]);
   };
 
   const addTeamMember = () => {
@@ -213,13 +227,28 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                             <DialogHeader>
                               <DialogTitle className="text-2xl font-bold">Team Registration</DialogTitle>
                               <DialogDescription>
-                                Add your team members for the <strong>{event.name}</strong>.
+                                Set your team identity and add members for <strong>{event.name}</strong>.
                               </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-6 py-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="teamName" className="text-xs font-bold uppercase tracking-widest text-primary">Team Name</Label>
+                                <Input 
+                                  id="teamName" 
+                                  placeholder="e.g. The Coding Knights" 
+                                  value={teamName}
+                                  onChange={(e) => setTeamName(e.target.value)}
+                                  className="h-11 border-primary/20 focus:border-primary shadow-sm"
+                                />
+                              </div>
+
                               <div className="grid gap-4 p-4 border rounded-2xl bg-muted/20">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <UserPlus className="h-4 w-4 text-muted-foreground" />
+                                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Add Team Member</span>
+                                </div>
                                 <div className="grid gap-2">
-                                  <Label htmlFor="memberName" className="text-xs font-bold uppercase tracking-widest">Member Name</Label>
+                                  <Label htmlFor="memberName" className="text-[10px] font-bold uppercase tracking-tight">Full Name</Label>
                                   <Input 
                                     id="memberName" 
                                     placeholder="e.g. John Doe" 
@@ -229,7 +258,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
                                   <div className="grid gap-2">
-                                    <Label htmlFor="roll" className="text-xs font-bold uppercase tracking-widest">Roll Number</Label>
+                                    <Label htmlFor="roll" className="text-[10px] font-bold uppercase tracking-tight">Roll Number</Label>
                                     <Input 
                                       id="roll" 
                                       placeholder="UNI-123" 
@@ -238,7 +267,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                                     />
                                   </div>
                                   <div className="grid gap-2">
-                                    <Label htmlFor="dept" className="text-xs font-bold uppercase tracking-widest">Department</Label>
+                                    <Label htmlFor="dept" className="text-[10px] font-bold uppercase tracking-tight">Department</Label>
                                     <Input 
                                       id="dept" 
                                       placeholder="CS, ME, etc." 
@@ -258,9 +287,14 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                                 <div className="max-h-[200px] overflow-y-auto space-y-2 pr-2">
                                   {teamMembers.map((member, i) => (
                                     <div key={i} className="flex items-center justify-between p-3 rounded-xl border bg-card">
-                                      <div className="grid gap-0.5">
-                                        <p className="text-sm font-bold">{member.name}</p>
-                                        <p className="text-[10px] text-muted-foreground uppercase">{member.rollNumber} • {member.department}</p>
+                                      <div className="flex items-center gap-3">
+                                        <div className="h-8 w-8 rounded-full bg-primary/5 flex items-center justify-center">
+                                          <ShieldCheck className="h-4 w-4 text-primary" />
+                                        </div>
+                                        <div className="grid gap-0.5">
+                                          <p className="text-sm font-bold">{member.name}</p>
+                                          <p className="text-[10px] text-muted-foreground uppercase">{member.rollNumber} • {member.department}</p>
+                                        </div>
                                       </div>
                                       <Button variant="ghost" size="icon" onClick={() => removeTeamMember(i)} className="text-destructive hover:bg-destructive/10">
                                         <Trash2 className="h-4 w-4" />
@@ -273,7 +307,13 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                             </div>
                             <DialogFooter className="pt-4 border-t">
                               <Button variant="outline" onClick={() => setIsTeamDialogOpen(false)}>Cancel</Button>
-                              <Button onClick={handleJoin} disabled={teamMembers.length === 0} className="bg-primary text-primary-foreground font-bold shadow-lg">Confirm Registration</Button>
+                              <Button 
+                                onClick={handleJoin} 
+                                disabled={!teamName || teamMembers.length === 0} 
+                                className="bg-primary text-primary-foreground font-bold shadow-lg min-w-[140px]"
+                              >
+                                Confirm Registration
+                              </Button>
                             </DialogFooter>
                           </DialogContent>
                         </Dialog>
