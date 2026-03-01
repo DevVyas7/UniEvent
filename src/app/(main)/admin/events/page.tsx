@@ -27,7 +27,9 @@ import {
   Building2, 
   CheckCircle2, 
   XCircle, 
-  AlertTriangle 
+  AlertTriangle,
+  Users,
+  User
 } from "lucide-react";
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
@@ -96,6 +98,7 @@ export default function AdminEventsPage() {
             <TableRow>
               <TableHead className="font-bold py-5">Event Title</TableHead>
               <TableHead className="font-bold">Organizing Department</TableHead>
+              <TableHead className="font-bold">Type</TableHead>
               <TableHead className="font-bold">Date</TableHead>
               <TableHead className="font-bold text-center">Status</TableHead>
               <TableHead className="w-[100px]"></TableHead>
@@ -115,6 +118,16 @@ export default function AdminEventsPage() {
                     <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
                     <span className="text-sm font-medium">{event.department}</span>
                   </div>
+                </TableCell>
+                <TableCell>
+                   <Badge variant="outline" className="capitalize text-[10px] gap-1 px-2 border-muted-foreground/20">
+                    {event.participationType === 'team' ? (
+                      <Users className="h-3 w-3" />
+                    ) : (
+                      <User className="h-3 w-3" />
+                    )}
+                    {event.participationType}
+                  </Badge>
                 </TableCell>
                 <TableCell>
                   <span className="text-sm text-muted-foreground">{new Date(event.date).toLocaleDateString()}</span>
@@ -158,7 +171,7 @@ export default function AdminEventsPage() {
             ))}
             {filteredEvents.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-20 text-muted-foreground italic">
+                <TableCell colSpan={6} className="text-center py-20 text-muted-foreground italic">
                   No campus events found matching your oversight criteria.
                 </TableCell>
               </TableRow>
