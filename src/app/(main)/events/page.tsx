@@ -15,8 +15,10 @@ export default function EventsPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
+    setIsMounted(true);
     const role = localStorage.getItem('userRole');
     if (role === 'organizer') {
       router.push('/manager/dashboard');
@@ -91,7 +93,7 @@ export default function EventsPage() {
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    {isJoined && (
+                    {isMounted && isJoined && (
                       <Badge className="bg-green-500/10 text-green-600 border-none flex gap-1 items-center px-2 py-0.5 text-[10px] font-bold">
                         <CheckCircle2 className="w-3 h-3" />
                         Joined
@@ -121,24 +123,28 @@ export default function EventsPage() {
                 <Button asChild size="sm" variant="ghost" className="h-9 text-xs font-bold text-primary hover:bg-primary/5">
                   <Link href={`/events/${event.id}`}>Details</Link>
                 </Button>
-                {isCompleted ? (
-                  <Button size="sm" variant="outline" disabled className="h-9 gap-1 px-5 opacity-40 rounded-full text-xs font-bold">
-                    Finished
-                  </Button>
-                ) : !isJoined ? (
-                  <Button 
-                    size="sm" 
-                    onClick={() => handleJoinEvent(event.name, event.participationType)}
-                    className="h-9 bg-accent text-accent-foreground hover:bg-accent/90 gap-1.5 px-5 rounded-full text-xs font-black shadow-lg shadow-accent/20"
-                  >
-                    {isTeam ? <Users className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-                    Join
-                  </Button>
-                ) : (
-                  <Button size="sm" variant="outline" disabled className="h-9 gap-1.5 px-5 opacity-50 rounded-full text-xs font-bold">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Joined
-                  </Button>
+                {isMounted && (
+                  <>
+                    {isCompleted ? (
+                      <Button size="sm" variant="outline" disabled className="h-9 gap-1 px-5 opacity-40 rounded-full text-xs font-bold">
+                        Finished
+                      </Button>
+                    ) : !isJoined ? (
+                      <Button 
+                        size="sm" 
+                        onClick={() => handleJoinEvent(event.name, event.participationType)}
+                        className="h-9 bg-accent text-accent-foreground hover:bg-accent/90 gap-1.5 px-5 rounded-full text-xs font-black shadow-lg shadow-accent/20"
+                      >
+                        {isTeam ? <Users className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                        Join
+                      </Button>
+                    ) : (
+                      <Button size="sm" variant="outline" disabled className="h-9 gap-1.5 px-5 opacity-50 rounded-full text-xs font-bold">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        Joined
+                      </Button>
+                    )}
+                  </>
                 )}
               </CardFooter>
             </Card>

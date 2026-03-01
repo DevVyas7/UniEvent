@@ -28,8 +28,10 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const [teamName, setTeamName] = useState('');
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [newMember, setNewMember] = useState<TeamMember>({ name: '', rollNumber: '', department: '' });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const role = localStorage.getItem('userRole') as any;
     setUserRole(role || 'student');
     const foundEvent = events.find((e) => e.id === id);
@@ -194,7 +196,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
               </div>
 
-              {isStudent && (
+              {isMounted && isStudent && (
                 <div className="pt-8 border-t border-muted space-y-4">
                   {isJoined ? (
                     <div className="bg-primary/5 text-primary px-4 py-8 rounded-2xl text-center border border-primary/20 space-y-4">
