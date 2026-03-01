@@ -1,8 +1,7 @@
-
 'use client';
 
 import { useState } from "react";
-import { events } from "@/lib/placeholder-data";
+import { events, users } from "@/lib/placeholder-data";
 import {
   Table,
   TableBody,
@@ -17,6 +16,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +36,9 @@ import {
   XCircle, 
   AlertTriangle,
   Users,
-  User
+  User,
+  ShieldCheck,
+  User as UserIcon
 } from "lucide-react";
 import Link from 'next/link';
 import { useToast } from "@/hooks/use-toast";
@@ -39,6 +48,8 @@ export default function AdminEventsPage() {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [allEvents, setAllEvents] = useState<Event[]>(events);
+  const [viewingParticipantsEvent, setViewingParticipantsEvent] = useState<Event | null>(null);
+  const [isParticipantsDialogOpen, setIsParticipantsDialogOpen] = useState(false);
 
   const filteredEvents = allEvents.filter(e => 
     e.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -51,6 +62,13 @@ export default function AdminEventsPage() {
       title: "System Action Successful",
       description: `Event status globally updated to ${status}.`,
     });
+  };
+
+  const handleViewParticipants = (event: Event) => {
+    setViewingParticipantsEvent(event);
+    setTimeout(() => {
+      setIsParticipantsDialogOpen(true);
+    }, 100);
   };
 
   const handleDeleteEvent = (id: string) => {
@@ -149,6 +167,10 @@ export default function AdminEventsPage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuItem onClick={() => handleViewParticipants(event)} className="gap-2">
+                        <Users className="h-4 w-4" />
+                        View Enrollment List
+                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleStatusUpdate(event.id, 'completed')} className="gap-2">
                         <CheckCircle2 className="h-4 w-4 text-green-600" />
                         Force Mark Completed
@@ -179,6 +201,101 @@ export default function AdminEventsPage() {
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={isParticipantsDialogOpen} onOpenChange={setIsParticipantsDialogOpen}>
+        <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">Global Participation Record</DialogTitle>
+            <DialogDescription className="text-base">
+              System Audit for: <span className="font-bold text-primary">{viewingParticipantsEvent?.name}</span>
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-6">
+            {viewingParticipantsEvent?.participationType === 'team' ? (
+              <div className="space-y-8">
+                {[
+                  { name: "Team Alpha", members: users.filter(u => u.role === 'student').slice(0, 3) },
+                  { name: "Code Warriors", members: users.filter(u => u.role === 'student').slice(1, 4) }
+                ].map((team, idx) => (
+                  <div key={idx} className="space-y-3">
+                    <div className="flex items-center gap-2 px-1">
+                      <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                        <Users className="h-4 w-4 text-accent" />
+                      </div>
+                      <h3 className="font-bold text-lg">{team.name}</h3>
+                      <Badge variant="outline" className="text-[10px] ml-auto uppercase">{team.members.length} Members</Badge>
+                    </div>
+                    <div className="bg-muted/30 rounded-2xl border border-muted overflow-hidden">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="hover:bg-transparent">
+                            <TableHead className="font-bold">Member Name</TableHead>
+                            <TableHead className="font-bold">Roll Number</TableHead>
+                            <TableHead className="font-bold">Department</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {team.members.map((member, mIdx) => (
+                            <TableRow key={mIdx} className="hover:bg-muted/50 transition-colors">
+                              <TableCell className="font-semibold py-4">
+                                <div className="flex items-center gap-2">
+                                  {mIdx === 0 && <ShieldCheck className="h-3.5 w-3.5 text-accent" />}
+                                  {member.name}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-xs font-mono">{member.enrollmentNumber || `UNI-${1000 + mIdx}`}</TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="text-[10px] font-medium bg-background">{member.department || 'Academic'}</Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-muted/30 rounded-2xl border border-muted overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="font-bold py-4 pl-6">Student Identity</TableHead>
+                      <TableHead className="font-bold">Student ID</TableHead>
+                      <TableHead className="font-bold pr-6">Home Department</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.filter(u => u.role === 'student').map((participant) => (
+                      <TableRow key={participant.id} className="hover:bg-muted/50 transition-colors border-b last:border-none">
+                        <TableCell className="font-semibold py-5 pl-6">
+                          <div className="flex items-center gap-3">
+                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                              <UserIcon className="h-4 w-4 text-primary" />
+                            </div>
+                            {participant.name}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs font-mono">{participant.enrollmentNumber || 'UNI-9921'}</TableCell>
+                        <TableCell className="pr-6">
+                          <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5">{participant.department || 'Academic'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </div>
+          
+          <DialogFooter className="border-t pt-6">
+            <Button onClick={() => setIsParticipantsDialogOpen(false)} className="rounded-full px-8 h-11 font-bold">
+              Close Audit View
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
