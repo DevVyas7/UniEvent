@@ -40,7 +40,9 @@ import {
   TrendingUp,
   Briefcase,
   CheckCircle2,
-  XCircle
+  XCircle,
+  User as UserIcon,
+  ShieldCheck
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -209,7 +211,12 @@ export default function OrganizerDashboardPage() {
                     <TableCell className="py-4">
                       <div className="grid gap-1">
                         <span className="font-bold text-sm leading-none">{event.name}</span>
-                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">{event.category} • {event.isCredit ? 'Credit' : 'Non-Credit'}</span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">{event.category} • {event.isCredit ? 'Credit' : 'Non-Credit'}</span>
+                          <Badge variant="outline" className="text-[8px] h-3.5 px-1.5 uppercase font-black tracking-tighter border-muted-foreground/20">
+                            {event.participationType}
+                          </Badge>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -223,7 +230,7 @@ export default function OrganizerDashboardPage() {
                     </TableCell>
                     <TableCell className="text-center">
                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[10px]">
-                        12 Joined
+                        {event.participationType === 'team' ? '4 Teams' : '12 Students'}
                        </Badge>
                     </TableCell>
                     <TableCell>
@@ -362,39 +369,96 @@ export default function OrganizerDashboardPage() {
       </Dialog>
 
       <Dialog open={isParticipantsDialogOpen} onOpenChange={setIsParticipantsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Student Enrollment Progress</DialogTitle>
-            <DialogDescription>
-              Viewing students enrolled in: <span className="font-bold text-primary">{viewingParticipantsEvent?.name}</span>
+            <DialogTitle className="text-2xl font-black">Student Enrollment Progress</DialogTitle>
+            <DialogDescription className="text-base">
+              Viewing participation records for: <span className="font-bold text-primary">{viewingParticipantsEvent?.name}</span>
             </DialogDescription>
           </DialogHeader>
-          <div className="py-4">
-            <div className="bg-muted/30 rounded-xl border border-muted overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Student Name</TableHead>
-                    <TableHead>Student ID</TableHead>
-                    <TableHead>Home Department</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.filter(u => u.role === 'student').slice(0, 4).map((participant) => (
-                    <TableRow key={participant.id} className="border-b last:border-none">
-                      <TableCell className="font-semibold py-4">{participant.name}</TableCell>
-                      <TableCell className="text-xs font-mono">{participant.enrollmentNumber || 'UNI-9921'}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5">{participant.department || 'Academic'}</Badge>
-                      </TableCell>
+          
+          <div className="py-6">
+            {viewingParticipantsEvent?.participationType === 'team' ? (
+              <div className="space-y-8">
+                {[
+                  { name: "Team Alpha", members: users.filter(u => u.role === 'student').slice(0, 3) },
+                  { name: "Code Warriors", members: users.filter(u => u.role === 'student').slice(1, 4) }
+                ].map((team, idx) => (
+                  <div key={idx} className="space-y-3">
+                    <div className="flex items-center gap-2 px-1">
+                      <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                        <UsersIcon className="h-4 w-4 text-accent" />
+                      </div>
+                      <h3 className="font-bold text-lg">{team.name}</h3>
+                      <Badge variant="outline" className="text-[10px] ml-auto uppercase">{team.members.length} Members</Badge>
+                    </div>
+                    <div className="bg-muted/30 rounded-2xl border border-muted overflow-hidden">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="hover:bg-transparent">
+                            <TableHead className="font-bold">Member Name</TableHead>
+                            <TableHead className="font-bold">Roll Number</TableHead>
+                            <TableHead className="font-bold">Department</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {team.members.map((member, mIdx) => (
+                            <TableRow key={mIdx} className="hover:bg-muted/50 transition-colors">
+                              <TableCell className="font-semibold py-4">
+                                <div className="flex items-center gap-2">
+                                  {mIdx === 0 && <ShieldCheck className="h-3.5 w-3.5 text-accent" />}
+                                  {member.name}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-xs font-mono">{member.enrollmentNumber || `UNI-${1000 + mIdx}`}</TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="text-[10px] font-medium bg-background">{member.department || 'Academic'}</Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-muted/30 rounded-2xl border border-muted overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="font-bold py-4 pl-6">Student Identity</TableHead>
+                      <TableHead className="font-bold">Student ID</TableHead>
+                      <TableHead className="font-bold pr-6">Home Department</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {users.filter(u => u.role === 'student').map((participant) => (
+                      <TableRow key={participant.id} className="hover:bg-muted/50 transition-colors border-b last:border-none">
+                        <TableCell className="font-semibold py-5 pl-6">
+                          <div className="flex items-center gap-3">
+                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                              <UserIcon className="h-4 w-4 text-primary" />
+                            </div>
+                            {participant.name}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs font-mono">{participant.enrollmentNumber || 'UNI-9921'}</TableCell>
+                        <TableCell className="pr-6">
+                          <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5">{participant.department || 'Academic'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
           </div>
-          <DialogFooter className="border-t pt-4">
-            <Button onClick={() => setIsParticipantsDialogOpen(false)} className="rounded-full px-8">Close Enrollment View</Button>
+          
+          <DialogFooter className="border-t pt-6">
+            <Button onClick={() => setIsParticipantsDialogOpen(false)} className="rounded-full px-8 h-11 font-bold">
+              Close Enrollment View
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

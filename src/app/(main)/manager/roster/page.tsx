@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, User as UserIcon, Building2, Calendar } from "lucide-react";
+import { Search, User as UserIcon, Building2, Calendar, Users as UsersIcon } from "lucide-react";
 
 export default function StudentRosterPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,17 +33,13 @@ export default function StudentRosterPage() {
     const students = users.filter(u => u.role === 'student');
     const deptEvents = events.filter(e => e.department === department);
 
-    // Create a flat list where each entry is a Student + Event pair
     return deptEvents.flatMap(event => {
-      // Deterministically pick 2-3 unique students for each event for demo consistency
       const eventIdNum = parseInt(event.id);
-      // Ensure we don't pick more students than exist in our placeholder data
       const studentCount = Math.min((eventIdNum % 2) + 1, students.length); 
       const startIdx = eventIdNum % students.length;
       
       const participants = [];
       for (let i = 0; i < studentCount; i++) {
-        // Use an offset to pick different students but keep it deterministic
         const studentIndex = (startIdx + i) % students.length;
         const student = students[studentIndex];
         
@@ -51,12 +47,14 @@ export default function StudentRosterPage() {
           ...student,
           eventName: event.name,
           eventDate: event.date,
+          participationType: event.participationType,
+          teamName: event.participationType === 'team' ? `Team ${String.fromCharCode(65 + (i % 3))}` : null,
           participationId: `${student.id}-${event.id}`
         });
       }
       return participants;
     });
-  }, [department, department]);
+  }, [department]);
 
   const filteredRoster = rosterData.filter(p => 
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -89,8 +87,8 @@ export default function StudentRosterPage() {
             <TableRow>
               <TableHead className="py-5 font-bold">Student Name</TableHead>
               <TableHead className="font-bold">Participated Event</TableHead>
+              <TableHead className="font-bold">Roster Info</TableHead>
               <TableHead className="font-bold">Student ID</TableHead>
-              <TableHead className="font-bold">Home Department</TableHead>
               <TableHead className="font-bold text-center">Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -118,13 +116,21 @@ export default function StudentRosterPage() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm font-mono">{entry.enrollmentNumber}</span>
+                  {entry.participationType === 'team' ? (
+                    <div className="flex items-center gap-2">
+                       <UsersIcon className="h-3.5 w-3.5 text-accent" />
+                       <span className="text-sm font-bold text-accent">{entry.teamName}</span>
+                       <Badge variant="outline" className="text-[8px] h-3.5 uppercase tracking-tighter border-accent/20 text-accent">Member</Badge>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-sm font-medium text-muted-foreground">Individual</span>
+                    </div>
+                  )}
                 </TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="text-sm font-medium">{entry.department}</span>
-                  </div>
+                  <span className="text-sm font-mono">{entry.enrollmentNumber}</span>
                 </TableCell>
                 <TableCell className="text-center">
                   <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-[10px]">
